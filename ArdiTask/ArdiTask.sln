@@ -3,13 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{AAB22DC0-A141-45C2-BDF1-4D10CF2FCF04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{AAB22DC0-A141-45C2-BDF1-4D10CF2FCF04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{E8E8218F-E7B2-4C34-94E4-520F7EC60416}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{E8E8218F-E7B2-4C34-94E4-520F7EC60416}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{A6B6CEE8-4417-43D2-AFD9-B230D8991204}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{A6B6CEE8-4417-43D2-AFD9-B230D8991204}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{0C5FFC0C-14C7-4E0F-B047-50483FD856EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{0C5FFC0C-14C7-4E0F-B047-50483FD856EB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A6B6CEE8-4417-43D2-AFD9-B230D8991204} = {A6B6CEE8-4417-43D2-AFD9-B230D8991204}
+		{AAB22DC0-A141-45C2-BDF1-4D10CF2FCF04} = {AAB22DC0-A141-45C2-BDF1-4D10CF2FCF04}
+		{E8E8218F-E7B2-4C34-94E4-520F7EC60416} = {E8E8218F-E7B2-4C34-94E4-520F7EC60416}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
