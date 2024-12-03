@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Interfaces.Persistence
+namespace Application.Common.Interfaces.Persistence.Commands
 {
-    public interface ICustomerRepository
+    public interface ICustomerRepository : IGenericRepository<Customer>
     {
-        Task<Customer> Add(Customer customer);
     }
 }

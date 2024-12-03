@@ -20,7 +20,7 @@ namespace Domain.Entities
         public string Citizenship { get; set; }
         public string Address { get; set; }
 
-        public ICollection<MedicalPolicy> MedicalPolicies { get; } = new List<MedicalPolicy>();
-        public ICollection<TravelPolicy> TravelPolicies { get; } = new List<TravelPolicy>();
+        public ICollection<MedicalPolicy> MedicalPolicies { get; set; } = new List<MedicalPolicy>();
+        public ICollection<TravelPolicy> TravelPolicies { get; set; } = new List<TravelPolicy>();
     }
 }

@@ -8,10 +8,27 @@ namespace API.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        [HttpPost("AddCustomer")]
-        public IActionResult AddCustomer(CreateMedicalPolicyRequest request)
+        [HttpGet("GetWithPolicies")]
+        public async Task<ActionResult<int>> GetWithPolicies()
+        {
+            return Ok();
+        }
+        [HttpGet("GetAllWithPolicies")]
+        public async Task<ActionResult<int>> GetAllWithPolicies()
+        {
+            return Ok();
+        }
+
+        [HttpGet("Get")]
+        public async Task<ActionResult<int>> Get()
+        {
+            return Ok();
+        }
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<int>> GetAll()
         {
             return Ok();
         }
     }
 }
+ 

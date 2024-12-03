@@ -10,6 +10,6 @@ namespace Domain.Entities
     {
         public Guid Id { get; set; }
         public DateTime CreateDate { get; set; }
-        public bool Active {  get; set; }   
+        public bool IsActive {  get; set; }   
     }
 }

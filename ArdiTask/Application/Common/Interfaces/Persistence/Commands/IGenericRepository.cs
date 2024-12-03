@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.Common.Interfaces.Persistence.Commands
+{
+    public interface IGenericRepository<TEntity> where TEntity : class
+    {
+        Task AddAsync(TEntity entity);
+        Task Update(TEntity entity);
+        void Delete(Guid id);
+    }
+}

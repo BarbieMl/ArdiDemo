@@ -1,20 +1,13 @@
 using Application;
 using Infrastructure;
-using Infrastructure.DataContext;
-using MediatR;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore; 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddApplication()
-                .AddInfrastructure(); 
+                .AddInfrastructure(builder.Configuration); 
 
-builder.Services.AddDbContext<InsuranceDBContext>(option =>
-{
-    option.UseNpgsql(builder.Configuration.GetConnectionString("ardiDB"));
-});
+
 
 builder.Services.AddControllers(); 
 

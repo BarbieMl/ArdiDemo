@@ -19,6 +19,7 @@
 		<ProjectReference Include="..\Domain\Domain.csproj" /> 
 	</ItemGroup>
 	<ItemGroup>
+	  <Folder Include="Features\Customer\Queries\" />
 	  <Folder Include="Features\Medical\Commands\DeleteMedical\" />
 	  <Folder Include="Features\Medical\Commands\UpdateMedical\" />
 	  <Folder Include="Features\Medical\Queries\GetMedicalList\" />
