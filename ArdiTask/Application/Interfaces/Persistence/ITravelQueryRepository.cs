@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Interfaces.Persistence.Customer
+namespace Application.Interfaces.Persistence
 {
-    public interface ICustomerRepository
+    public class ITravelQueryRepository
     {
     }
 }

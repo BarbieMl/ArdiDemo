@@ -1,12 +1,7 @@
 ﻿using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore; 
 
-namespace Infrastructure.Data
+namespace Infrastructure.DataContext
 {
     public class InsuranceDBContext :DbContext
     {
@@ -14,8 +9,14 @@ namespace Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Customer>().HasOne(x => x.Customer).WithMany(x => x.Orders).HasForeignKey(x => x.CustomerId);
+            builder.Entity<MedicalPolicy>()
+                .HasOne(x => x.Customer).WithMany(x => x.MedicalPolicies).HasForeignKey(x => x.CustomerId);
+            
+            builder.Entity<TravelPolicy>()
+                 .HasOne(x => x.Customer).WithMany(x => x.TravelPolicies).HasForeignKey(x => x.CustomerId);
         }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<MedicalPolicy> MedicalPolicies { get; set; }
+        public DbSet<TravelPolicy> TravelPolicies { get; set; }
     }
 }

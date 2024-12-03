@@ -1,4 +1,6 @@
 ﻿using API.Request.CustomerRequest;
+using Application.Features.Medical.Commands.CreateMedical;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,6 +11,13 @@ namespace API.Controllers
     [ApiController]
     public class MedicalController : ControllerBase
     {
+        private readonly IMediator _mediator;
+        public MedicalController(IMediator mediator)
+        {
+
+            _mediator = mediator;
+
+        }
         // GET: api/<MedicalInsuranceController>
         [HttpGet]
         public IEnumerable<string> Get()
@@ -25,9 +34,10 @@ namespace API.Controllers
 
         // POST api/<MedicalInsuranceController>
         [HttpPost("CreatePolicy")]
-        public IActionResult CreatePolicy([FromBody] CreateMedicalRequest request)
+        public async Task<ActionResult<CreateMedicalCommandResponse>> CreatePolicy([FromBody] CreateMedicalCommand command)
         {
-           return Ok();
+            var result = await _mediator.Send(command);
+           return Ok(result);
         }
 
         // PUT api/<MedicalInsuranceController>/5

@@ -1,24 +1,16 @@
-﻿using Application.Interfaces.Persistence.Medical;
-using Infrastructure.DataContext;
-using Microsoft.Extensions.DependencyInjection; 
-using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
-
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Application.Interfaces.Persistence;
+using Infrastructure.Repoistory;
 
 namespace Infrastructure
-{ 
+{
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection service, Configuration config)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection service)
         {  
-            service.AddScoped<IMedicalRepository, IMedicalRepository>();
-            
+            service.AddScoped<IMedicalRepository, MedicalRepository>(); 
+            service.AddScoped<ICustomerRepository, CustomerRepository>(); 
+
             return service; 
         }    
     }

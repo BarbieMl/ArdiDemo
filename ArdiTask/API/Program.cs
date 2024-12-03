@@ -1,18 +1,26 @@
+using Application;
+using Infrastructure;
+using Infrastructure.DataContext;
+using MediatR;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore; 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure();
-builder.Services.AddApplicationDbContext();
+builder.Services.AddApplication()
+                .AddInfrastructure(); 
 
+builder.Services.AddDbContext<InsuranceDBContext>(option =>
+{
+    option.UseNpgsql(builder.Configuration.GetConnectionString("ardiDB"));
+});
 
-builder.Services.AddControllers();
-
-builder.Services.AddApplicationDbContext(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddControllers(); 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(); 
 
 var app = builder.Build();
 

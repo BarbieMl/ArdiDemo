@@ -1,4 +1,4 @@
-﻿using Application.Interfaces.Persistence.Medical;
+﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -13,6 +13,7 @@ namespace Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection service)
         {
+            service.AddMediatR(typeof(DependencyInjection).Assembly);   
             return service;
         }
     }

@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Interfaces.Persistence.Medical
+namespace Application.Interfaces.Persistence
 {
-    public interface IMedicalRepository
+    public class IMedicalQueryRepository
     {
-        Task Add(Customer customer);
     }
 }

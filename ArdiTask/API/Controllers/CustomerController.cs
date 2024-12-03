@@ -9,7 +9,7 @@ namespace API.Controllers
     public class CustomerController : ControllerBase
     {
         [HttpPost("AddCustomer")]
-        public IActionResult AddCustomer(CreateMedicalRequest request)
+        public IActionResult AddCustomer(CreateMedicalPolicyRequest request)
         {
             return Ok();
         }

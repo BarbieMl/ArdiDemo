@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Interfaces.Persistence.Policy
+namespace Infrastructure.Repoistory
 {
-    public interface IPolicyRepository
+    public class CustomerQueryRepository
     {
     }
 }

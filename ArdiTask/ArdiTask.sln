@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{AAB22DC0-A141-45C2-BDF1-4D10CF2FCF04}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{E8E8218F-E7B2-4C34-94E4-520F7EC60416}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AAB22DC0-A141-45C2-BDF1-4D10CF2FCF04} = {AAB22DC0-A141-45C2-BDF1-4D10CF2FCF04}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{A6B6CEE8-4417-43D2-AFD9-B230D8991204}"
 EndProject
