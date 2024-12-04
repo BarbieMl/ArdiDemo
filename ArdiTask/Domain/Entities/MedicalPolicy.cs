@@ -9,6 +9,7 @@ namespace Domain.Entities
 {
     public class MedicalPolicy : Policy
     {
-        public TypeOfPaymentPeriod TypeOfPaymentPeriod { get; set; }    
+        public TypeOfPaymentPeriod TypeOfPaymentPeriod { get; set; }
+        public string Provider { get; set; }
     }
 }

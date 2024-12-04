@@ -1,5 +1,5 @@
-﻿using Application.Common.Interfaces.Persistence.Commands;
-using Application.Common.Interfaces.Persistence.Queries;
+﻿using Application.Common.Contracts.Persistence.Command;
+using Application.Common.Contracts.Persistence.Query;
 using Dapper;
 using Infrastructure.Persistence.DataContext;
 using Microsoft.EntityFrameworkCore;

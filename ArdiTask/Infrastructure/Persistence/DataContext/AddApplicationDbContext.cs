@@ -9,19 +9,27 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using Npgsql;
 
 namespace Infrastructure.Persistence.DataContext
 {
     public static class AppDbContextExtensions
-    {
-        public static void AddApplicationDbContext(this IServiceCollection service, string connectionString)
-        {
-            service.AddDbContext<InsuranceDBContext>(option =>
-                {
-                    option.UseNpgsql(connectionString);
-                });
-            service.AddScoped<IDbConnection>(sp =>
-            new SqlConnection(connectionString));
+    { 
+        public static IServiceCollection AddApplicationDbContext(this IServiceCollection services, string connectionString)
+        { 
+            services.AddDbContext<InsuranceDBContext>(options =>
+                options.UseNpgsql(connectionString));
+            return services;
         }
+        public static IServiceCollection AddDapperSupport(this IServiceCollection services, string connectionString)
+        {
+            services.AddScoped<DapperInsuranceDBContext>(sp =>
+                new DapperInsuranceDBContext(connectionString));  // Make sure connectionString is provided properly
+
+            services.AddScoped<IDbConnection>(_ => new NpgsqlConnection(connectionString));
+            return services;
+        }
+
+
     }
 }

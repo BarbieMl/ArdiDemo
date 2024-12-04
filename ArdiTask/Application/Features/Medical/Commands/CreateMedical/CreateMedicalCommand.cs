@@ -18,9 +18,12 @@ namespace Application.Features.Medical.Commands.CreateMedical
         string PhoneNumber,
         string Email, 
         Gender Gender,
-        string Adress,
-        DateTime FromDate,
-        DateTime EndDate
+        string Address,
+        DateTime StartDate,
+        DateTime EndDate,
+        decimal PremiumAmount,
+        string Provider,
+        TypeOfPaymentPeriod TypeOfPaymentPeriod
     ) : IRequest<CreateMedicalCommandResponse>;
     
 }

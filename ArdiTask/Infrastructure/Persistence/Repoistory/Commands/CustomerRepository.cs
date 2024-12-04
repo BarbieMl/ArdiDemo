@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.Persistence.Commands;
+﻿using Application.Common.Contracts.Persistence.Command;
 using Domain.Entities;
 using Infrastructure.Persistence.DataContext;
 

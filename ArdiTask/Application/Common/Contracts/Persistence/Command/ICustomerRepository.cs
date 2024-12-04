@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Common.Interfaces.Persistence.Queries
+namespace Application.Common.Contracts.Persistence.Command
 {
-    public interface ITravelQueryRepository : IGenericQueryRepository<TravelPolicy>
+    public interface ICustomerRepository : IGenericRepository<Customer>
     {
     }
 }

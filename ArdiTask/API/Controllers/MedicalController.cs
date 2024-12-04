@@ -34,9 +34,9 @@ namespace API.Controllers
 
         // POST api/<MedicalInsuranceController>
         [HttpPost("CreatePolicy")]
-        public async Task<ActionResult<CreateMedicalCommandResponse>> CreatePolicy([FromBody] CreateMedicalCommand command)
+        public async Task<ActionResult<CreateMedicalCommandResponse>> CreatePolicy([FromBody] CreateMedicalCommands command, CancellationToken token)
         {
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(command, token);
            return Ok(result);
         }
 

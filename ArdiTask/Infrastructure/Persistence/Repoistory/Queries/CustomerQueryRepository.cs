@@ -1,9 +1,10 @@
-﻿using Application.Common.Interfaces.Persistence.Commands;
-using Application.Common.Interfaces.Persistence.Queries;
+﻿using Application.Common.Contracts.Persistence.Command;
+using Application.Common.Contracts.Persistence.Query;
 using Dapper;
 using Domain.Entities;
 using Infrastructure.Persistence.DataContext;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -71,15 +72,28 @@ namespace Infrastructure.Persistence.Repoistory.Queries
 
         public async Task<Customer?> GetByIdNumber(string IdNumber)
         {
-            using var connection = _context.Database.GetDbConnection();
-            string sql = $"SELECT * FROM Customers Where IdNumber = @IdNumber";
-
-            if (connection.State == ConnectionState.Closed)
+            try
             {
-                await connection.OpenAsync();
+                using var connection = _context.Database.GetDbConnection();
+                string sql = $"SELECT * FROM Customers Where IdNumber = @IdNumber";
+
+                if (connection.State == ConnectionState.Closed)
+                {
+                    await connection.OpenAsync();
+                }
+
+                var result = await connection.QueryFirstOrDefaultAsync<Customer?>(sql, new { IdNumber = IdNumber });
+                return result;
+            }
+            catch (NpgsqlException ex) when (ex.SqlState == "42P01")
+            { 
+                return null; 
+            }
+            catch (Exception ex)
+            { 
+                throw new Exception(ex.Message);
             }
 
-            return await connection.QueryFirstOrDefaultAsync<Customer>(sql, new { IdNumber = IdNumber });
         }
 
         public async Task<Customer> GetWithRelationsAsync(Guid Id)

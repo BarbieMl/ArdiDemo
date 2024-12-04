@@ -1,33 +1,81 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MediatR;
-using System.Threading.Tasks;
-using Application.Common.Interfaces.Persistence.Commands;
-using Application.Common.Interfaces.Persistence.Queries;
-using System.Reflection.Metadata.Ecma335;
+using Application.Common.Contracts.Persistence.Command;
+using Application.Common.Contracts.Persistence.Query;
+using Domain.Entities;
+using Application.Common.Contracts.Persistence.UnitOfWork;
 
 namespace Application.Features.Medical.Commands.CreateMedical
 {
-    public class CreateMedicalCommandHandler : IRequestHandler<CreateMedicalCommand, CreateMedicalCommandResponse>
+    public class CreateMedicalCommandHandler : IRequestHandler<CreateMedicalCommands, CreateMedicalCommandResponse>
     {
         private readonly IMedicalRepository _medicalRepository;
         private readonly ICustomerQueryRepository _customerQuery;
+        private readonly ICustomerRepository _customer;
+        private readonly IUnitOfWork _unitOfWork;
+
         public CreateMedicalCommandHandler(IMedicalRepository medicalRepository,
-             ICustomerQueryRepository customerQuery)
+             ICustomerQueryRepository customerQuery,
+             ICustomerRepository customer,
+             IUnitOfWork unitOfWork)
         {
             _medicalRepository = medicalRepository;
             _customerQuery = customerQuery;
+            _customer = customer;
+            _unitOfWork = unitOfWork;   
         }
+         
+        public async Task<CreateMedicalCommandResponse> Handle(CreateMedicalCommands command, CancellationToken cancellationToken)
+        { 
 
-        public async Task<CreateMedicalCommandResponse> Handle(CreateMedicalCommand request, CancellationToken cancellation)
-        {
-           var customer = _customerQuery.GetByIdNumber(request.IdNumber);
-            // if (customer == null || customer.IsActive is true) { }
+            foreach (CreateMedicalCommand request in command.Commands)
+            {
+                Customer customer;
+                var existingCustomer = await _customerQuery.GetByIdNumber(request.IdNumber);
+                if (existingCustomer is not null && existingCustomer.IsActive)
+                {
+                    customer = existingCustomer;
+                }
+                else
+                { 
+                    customer = new Customer
+                    {
+                        Id = Guid.NewGuid(),
+                        IdNumber = request.IdNumber,
+                        DateOfBirth = request.DateOfBirth,
+                        FirstName = request.FirstName,
+                        LastName = request.LastName,
+                        PhoneNumber = request.PhoneNumber,
+                        Email = request.Email,
+                        Gender = request.Gender,
+                        Citizenship = request.Citizenship,
+                        Address = request.Address
+                    };
+                }
+                await _customer.AddAsync(customer); 
+
+                var policy = new MedicalPolicy
+                {
+                    CustomerId = customer.Id,
+                    PolicyNumber = $"P{Guid.NewGuid().ToString("N").Substring(0, 10)}",
+                    TypeOfPaymentPeriod = request.TypeOfPaymentPeriod,
+                    StartDate = request.StartDate,
+                    EndDate = request.EndDate,
+                    PremiumAmount = request.PremiumAmount,
+                    Provider = request.Provider,
+                    Insurer = customer.IdNumber
+                };
+
+                await _medicalRepository.AddAsync(policy);
+            }
+
+             await _unitOfWork.SaveAsync();
+            var item = command.Commands.FirstOrDefault();
 
            
+            return new CreateMedicalCommandResponse($"{item.FirstName} {item.FirstName}", item.Citizenship, item.IdNumber, item.DateOfBirth, item.PhoneNumber, item.Email);
+
+
         }
+
     }
 }

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Common.Interfaces.Persistence.Queries
+namespace Application.Common.Contracts.Persistence.Query
 {
     public interface IGenericQueryRepository<TEntity>
     {

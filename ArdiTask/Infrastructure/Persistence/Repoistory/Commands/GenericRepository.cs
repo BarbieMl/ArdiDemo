@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.Persistence.Commands;
+﻿using Application.Common.Contracts.Persistence.Command;
 using Infrastructure.Persistence.DataContext;
 using Microsoft.EntityFrameworkCore;
 using System;
