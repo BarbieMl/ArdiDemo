@@ -12,6 +12,7 @@ using Infrastructure.Persistence.Repoistory.Queries;
 using Application.Common.Contracts.Persistence.Query;
 using Application.Common.Contracts.Persistence.UnitOfWork;
 using Infrastructure.Persistence.Repoistory.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
@@ -20,10 +21,15 @@ namespace Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection service, IConfiguration config)
         {
 
+
+           // service.AddApplicationDbContext(config.GetConnectionString("ardiDB"));
+            service.AddDapperSupport(config.GetConnectionString("ardiDB"));
+
+            service.AddDbContext<InsuranceDBContext>(options =>
+             options.UseNpgsql(config.GetConnectionString("ardiDB")));
+
             service.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            service.AddApplicationDbContext(config.GetConnectionString("ardiDB"));
-            service.AddDapperSupport(config.GetConnectionString("ardiDB"));
 
             service.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             service.AddScoped(typeof(IGenericQueryRepository<>), typeof(GenericQueryRepository<>));

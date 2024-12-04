@@ -20,7 +20,7 @@ namespace Infrastructure.Persistence.Repoistory.Commands
         }
         public async Task AddAsync(TEntity entity)
         {
-             _context.AddAsync(entity);
+            await _entities.AddAsync(entity);
         }
 
         public void Delete(Guid id)

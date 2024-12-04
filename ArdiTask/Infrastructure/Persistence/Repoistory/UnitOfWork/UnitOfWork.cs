@@ -1,61 +1,64 @@
 ﻿using Application.Common.Contracts.Persistence.Command; 
 using Application.Common.Contracts.Persistence.UnitOfWork;
-using Infrastructure.Persistence.DataContext; 
+using Infrastructure.Persistence.DataContext;
+using Infrastructure.Persistence.Repoistory.Commands;
+using Infrastructure.Persistence.Repoistory.EFCore;
+using Microsoft.EntityFrameworkCore;
 using System.Data; 
 
 namespace Infrastructure.Persistence.Repoistory.UnitOfWork
 {
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    public class UnitOfWork : IUnitOfWork
     {
+        private readonly InsuranceDBContext _context;
+        private bool _disposed;
+         
 
-        private readonly IDbTransaction _transaction;
-        private readonly DapperInsuranceDBContext _context;
-
-        public bool _disposed;
-
-        public ICustomerRepository CustomerRepository { get; }
-        public IMedicalRepository MedicalRepository { get; }
-        public ITravelRepository TravelRepository { get; }
-
-        public UnitOfWork(
-            DapperInsuranceDBContext dBContext,
-            ICustomerRepository customerRepository,
-            IMedicalRepository medicalRepository,
-            ITravelRepository travelRepository)
+        public UnitOfWork(InsuranceDBContext dBContext)
         {
             _context = dBContext ?? throw new ArgumentNullException(nameof(dBContext));
-            _transaction = _context.OpenConnection().BeginTransaction();
-            CustomerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
-            MedicalRepository = medicalRepository ?? throw new ArgumentNullException(nameof(medicalRepository));
-            TravelRepository = travelRepository ?? throw new ArgumentNullException(nameof(travelRepository));
-        } 
-        public async Task SaveAsync()
+        }
+        private ICustomerRepository _customers;
+        private IMedicalRepository _medicalPolicies;
+        private ITravelRepository _travelRepository; 
+         
+
+        public ICustomerRepository CustomerRepository => _customers ??= new CustomerRepository(_context);
+
+        public IMedicalRepository MedicalRepository => _medicalPolicies ??= new MedicalRepository(_context);
+
+        public ITravelRepository TravelRepository => _travelRepository ??= new TravelRepository(_context);
+ 
+
+        public async Task SaveAsync(CancellationToken cancellationToken)
         {
-            try
-            {
-                await Task.Run(() => _transaction.Commit());
-            }
-            catch
-            {
-                await Task.Run(() => _transaction.Rollback());
-                throw;
-            }
-            finally
-            {
-                _transaction.Dispose();
-            }
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+        public void Save()
+        {
+            if (_disposed)
+                throw new ObjectDisposedException(nameof(UnitOfWork));
+
+            _context.SaveChanges();
         }
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+         
+        protected virtual void Dispose(bool disposing)
+        {
             if (!_disposed)
             {
-                _transaction.Dispose();
-                _context.Dispose();
+                if (disposing)
+                { 
+                    _context?.Dispose();
+                } 
                 _disposed = true;
             }
         }
-         
     }
-     
+
 
 }
