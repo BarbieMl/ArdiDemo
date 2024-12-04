@@ -54,6 +54,7 @@ namespace Application.Features.Medical.Commands.CreateMedical
                         };
                     }
                     await _customer.AddAsync(customer);
+                    await _customer.SaveAsync();
 
                     var policy = new MedicalPolicy
                     {
@@ -68,9 +69,10 @@ namespace Application.Features.Medical.Commands.CreateMedical
                     };
 
                     await _medicalRepository.AddAsync(policy);
+                   await _medicalRepository.SaveAsync(); 
                 }
 
-                await _unitOfWork.SaveAsync(cancellationToken);
+               // await _unitOfWork.SaveAsync(cancellationToken);
                 var item = command.Commands.FirstOrDefault();
                 //var item = await _customerQuery.GetByIdNumber(command.Commands[0].IdNumber);
 

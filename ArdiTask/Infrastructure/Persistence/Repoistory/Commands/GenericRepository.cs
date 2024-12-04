@@ -23,6 +23,10 @@ namespace Infrastructure.Persistence.Repoistory.Commands
             await _entities.AddAsync(entity);
         }
 
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
         public void Delete(Guid id)
         {
             TEntity existing = _entities.Find(id);

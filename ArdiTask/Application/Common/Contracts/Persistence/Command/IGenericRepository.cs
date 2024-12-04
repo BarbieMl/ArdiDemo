@@ -10,6 +10,7 @@ namespace Application.Common.Contracts.Persistence.Command
     {
         Task AddAsync(TEntity entity);
         Task Update(TEntity entity);
+        Task SaveAsync();
         void Delete(Guid id);
     }
 }
