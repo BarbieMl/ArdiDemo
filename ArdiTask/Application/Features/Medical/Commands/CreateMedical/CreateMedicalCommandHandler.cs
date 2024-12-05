@@ -1,8 +1,7 @@
 ﻿using MediatR;
-using Application.Common.Contracts.Persistence.Command;
-using Application.Common.Contracts.Persistence.Query;
-using Domain.Entities;
+using Application.Common.Contracts.Persistence.Command; 
 using Application.Common.Contracts.Persistence.UnitOfWork;
+using Domain.Entities;
 
 namespace Application.Features.Medical.Commands.CreateMedical
 {

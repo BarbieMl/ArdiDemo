@@ -24,10 +24,11 @@ namespace Infrastructure.Persistence.DataContext
         }
         public static IServiceCollection AddDapperSupport(this IServiceCollection services, string connectionString)
         {
-            services.AddScoped<DapperInsuranceDBContext>(sp =>
-                new DapperInsuranceDBContext(connectionString)); 
+            services.AddScoped<DapperInsuranceDBContext>(provider =>
+           new DapperInsuranceDBContext(connectionString));
 
-            services.AddScoped<IDbConnection>(_ => new NpgsqlConnection(connectionString));
+            services.AddScoped<IDbConnection>(sp =>
+           new NpgsqlConnection(connectionString));
             return services;
         }
 

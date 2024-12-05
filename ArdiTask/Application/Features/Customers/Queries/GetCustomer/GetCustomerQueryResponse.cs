@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Customer.Queries.GetCustomer
+namespace Application.Features.Customers.Queries.GetCustomer
 {
     public record GetCustomerQueryResponse(
         Guid Id,

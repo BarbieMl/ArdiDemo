@@ -1,5 +1,5 @@
 ﻿using API.Request.CustomerRequest;
-using Application.Features.Customer.Queries.GetCustomer;
+using Application.Features.Customers.Queries.GetCustomer;
 using Application.Features.Medical.Commands.CreateMedical;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -21,9 +21,10 @@ namespace API.Controllers
         
 
         [HttpGet("GetByIdAsync")]
-        public async Task<ActionResult<GetCustomerQueryResponse>> GetByIdAsync([FromBody] GetCustomerQuery query, CancellationToken token)
+        public async Task<ActionResult<GetCustomerQueryResponse>> GetByIdAsync([FromQuery] Guid Id, CancellationToken token)
         {
-            var result = _mediator.Send(query);
+            var query = new GetCustomerQuery(Id);
+            var result = _mediator.Send(query, token);
             return Ok(result);
         }
         [HttpGet("GetAll")]

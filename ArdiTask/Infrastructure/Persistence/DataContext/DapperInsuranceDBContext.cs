@@ -11,40 +11,24 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.DataContext
 {
+    using Microsoft.EntityFrameworkCore;
     using Npgsql;
     using System.Collections.Concurrent;
     using System.Data;
-
-    public sealed class DapperInsuranceDBContext
+    using System.Data.Entity.Infrastructure;
+    public class DapperInsuranceDBContext
     {
-        private readonly string _connectionString;
-        private IDbConnection _connection;
-        private ConcurrentBag<NpgsqlConnection> _connections = new ConcurrentBag<NpgsqlConnection>();
-         
+        private readonly string _connectionString; 
+
         public DapperInsuranceDBContext(string connectionString)
         {
-            _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
-        }
-        public IDbConnection OpenConnection()
-        {
-            if (_connection == null)
-            {
-                _connection = new NpgsqlConnection(_connectionString);
-                _connection.Open();
-            }
+            _connectionString = connectionString;
 
-            var sqlConnection = _connection as NpgsqlConnection;
-            if (sqlConnection != null)
-            {
-                _connections.Add(sqlConnection);
-            }
-
-            return sqlConnection;
-        }
-
-        public IDbConnection CreateConnection()
-            => new NpgsqlConnection(_connectionString);
-    } 
+        }  
+        public IDbConnection CreateConnection() => new NpgsqlConnection(_connectionString); 
+        
+    }
+    
 
 }
 

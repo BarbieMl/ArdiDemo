@@ -22,8 +22,8 @@ namespace Infrastructure
         {
 
 
-            service.AddApplicationDbContext(config.GetConnectionString("ardiDB"));
-            service.AddDapperSupport(config.GetConnectionString("ardiDB"));
+            service.AddApplicationDbContext(config.GetConnectionString("DefaultConnection"));
+            service.AddDapperSupport(config.GetConnectionString("DefaultConnection"));
             service.AddScoped<IUnitOfWork, UnitOfWork>();
 
             service.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
