@@ -10,12 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.DataContext
-{
-    using Microsoft.EntityFrameworkCore;
-    using Npgsql;
-    using System.Collections.Concurrent;
-    using System.Data;
-    using System.Data.Entity.Infrastructure;
+{ 
+    using System.Data; 
     public class DapperInsuranceDBContext
     {
         private readonly string _connectionString; 
@@ -25,7 +21,7 @@ namespace Infrastructure.Persistence.DataContext
             _connectionString = connectionString;
 
         }  
-        public IDbConnection CreateConnection() => new NpgsqlConnection(_connectionString); 
+        public IDbConnection CreateConnection() => new SqlConnection(_connectionString); 
         
     }
     

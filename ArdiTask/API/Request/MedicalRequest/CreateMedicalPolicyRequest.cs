@@ -5,7 +5,7 @@ namespace API.Request.CustomerRequest
     public record CreateMedicalPolicyRequest(
         string Citizenship, 
         string IdNumber, 
-        DateOnly DateOfBirth,
+        DateTime DateOfBirth,
         string PhoneNumber,
         string Email,
         string FirstName,

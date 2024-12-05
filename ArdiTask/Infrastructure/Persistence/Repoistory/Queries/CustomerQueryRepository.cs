@@ -2,17 +2,8 @@
 using Application.Common.Contracts.Persistence.Query;
 using Dapper;
 using Domain.Entities;
-using Infrastructure.Persistence.DataContext;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Npgsql;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Infrastructure.Persistence.DataContext; 
+using Npgsql; 
 using static Dapper.SqlMapper; 
 
 namespace Infrastructure.Persistence.Repoistory.Queries
@@ -28,8 +19,8 @@ namespace Infrastructure.Persistence.Repoistory.Queries
         { 
             _context = context ?? throw new ArgumentNullException(nameof(context));
         } 
-
-        public async Task<IEnumerable<Customer>> GetAllWithRelationsAsync()
+         
+        public async Task<IEnumerable<Customer>> GetAllCustomerAsync()
         { 
             string sql = @"
             SELECT *
@@ -38,19 +29,17 @@ namespace Infrastructure.Persistence.Repoistory.Queries
             LEFT JOIN TravelPolicies tp ON c.Id = tp.CustomerId AND tp.IsActive = 1";
 
             using var connection =   _context.CreateConnection();
- 
-             
-            var customersDictionary = new Dictionary<Guid, Customer>();
+            connection.Open();
+            Customer customerEntry = default;
 
-            var customers = await connection.QueryAsync<Customer, MedicalPolicy, TravelPolicy, Customer>(
+            var customers = await connection.QueryAsync<Customer, MedicalPolicy?, TravelPolicy?, Customer>(
                 sql, (customer, medicalPolicy, travelPolicy) =>
                 { 
-                    if (!customersDictionary.TryGetValue(customer.Id, out var customerEntry))
-                    {
+                    if (customer is not null)
+                    { 
+                        customer.MedicalPolicies = customer.MedicalPolicies ?? new List<MedicalPolicy>();
+                        customer.TravelPolicies = customer.TravelPolicies ?? new List<TravelPolicy>();
                         customerEntry = customer;
-                        customerEntry.MedicalPolicies = new List<MedicalPolicy>();
-                        customerEntry.TravelPolicies = new List<TravelPolicy>();
-                        customersDictionary.Add(customerEntry.Id, customerEntry);
                     }
                      
                     if (medicalPolicy != null)
@@ -64,41 +53,20 @@ namespace Infrastructure.Persistence.Repoistory.Queries
                     }
 
                     return customerEntry;
-                },
-                splitOn: "MedicalPolicyId, TravelPolicyId"  
+                }
             );
 
             return customers.Distinct().ToList(); 
         }
       
-        public async Task<Customer?> GetByIdNumber(string IdNumber)
-        { 
-            try
-            {
-                string sql = "SELECT * FROM Customers WHERE IdNumber = @IdNumber";
-                using var connection = _context.CreateConnection();
-                
-                connection.Open();
-                var result = await connection.QueryAsync<Customer>(sql, new { IdNumber });
-                return result.FirstOrDefault();
-            }
-            catch (NpgsqlException ex) when (ex.SqlState == "42P01")
-            {
-                return null;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-
-        }
-
-        public async Task<Customer> GetByIdAsync(Guid Id)
+        
+        public async Task<Customer> GetCustomerByIdAsync(Guid Id)
         {
             try
             {
 
                 using var connection =  _context.CreateConnection();
+                connection.Open();
 
                 string sql = @"
                 SELECT *
@@ -107,40 +75,35 @@ namespace Infrastructure.Persistence.Repoistory.Queries
                 LEFT JOIN TravelPolicies tp ON c.Id = tp.CustomerId AND tp.IsActive = 1
                 WHERE c.Id = @Id";
 
-                //if (connection.State == ConnectionState.Closed)
-                //{
-                //    await connection.OpenAsync();
-                //}
+                Customer customerEntry = default; 
 
-                Customer customerEntry = default;
+                var result = await connection.QueryAsync<Customer, MedicalPolicy?, TravelPolicy?, Customer>(
+                   sql, (customer, medicalPolicy, travelPolicy) =>
+                   { 
+                           if (customer is not null)
+                           {
+                               customer.MedicalPolicies = customer.MedicalPolicies ?? new List<MedicalPolicy>();
+                               customer.TravelPolicies = customer.TravelPolicies ?? new List<TravelPolicy>();
 
-                var customer = await connection.QueryAsync<Customer, MedicalPolicy, TravelPolicy, Customer>(
-                    sql, (customer, medicalPolicy, travelPolicy) =>
-                    {
-                        if (customerEntry == null)
-                        {
-                            customerEntry = customer;
-                            customerEntry.MedicalPolicies = new List<MedicalPolicy>();
-                            customerEntry.TravelPolicies = new List<TravelPolicy>();
-                        }
+                               customerEntry = customer;
 
-                        if (medicalPolicy != null)
-                        {
-                            customerEntry.MedicalPolicies.Add(medicalPolicy);
-                        }
+                               if (medicalPolicy != null)
+                               {
+                              
+                                   customerEntry.MedicalPolicies.Add(medicalPolicy);
+                               }
 
-                        if (travelPolicy != null)
-                        {
-                            customerEntry.TravelPolicies.Add(travelPolicy);
-                        }
+                               if (travelPolicy != null)
+                               {
+                                   customerEntry.TravelPolicies.Add(travelPolicy);
+                               }
+                           }
 
-                        return customerEntry;
-                    },
-                    new { Id },
-                    splitOn: "MedicalPolicyId,TravelPolicyId"
-                );
-
-                return customerEntry;
+                       return customerEntry;
+                   },
+                   new { Id }
+                 );
+                return result.FirstOrDefault();
             }catch(Exception ex)
             {
                 throw new Exception(ex.Message);

@@ -12,7 +12,7 @@ namespace Application.Features.Medical.Commands.CreateMedical
     (
         string Citizenship,
         string IdNumber,
-        DateOnly DateOfBirth,
+        DateTime DateOfBirth,
         string FirstName,
         string LastName,
         string PhoneNumber,

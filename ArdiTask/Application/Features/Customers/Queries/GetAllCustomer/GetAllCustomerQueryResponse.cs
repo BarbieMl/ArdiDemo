@@ -1,5 +1,4 @@
 ﻿using Application.DTOs;
-using Domain.Entities;
 using Domain.Enumeration;
 using System;
 using System.Collections.Generic;
@@ -7,15 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Customers.Queries.GetCustomer
+namespace Application.Features.Customers.Queries.GetAllCustomer
 {
-    public record GetCustomerQueryResponse(
+    public record GetAllCustomerQueryResponse(
         Guid Id,
         DateTime CreateDate,
         bool IsActive,
-        string IdNumber ,
+        string IdNumber,
         string PassportNumber,
-        DateOnly DateOfBirth, 
+        DateOnly DateOfBirth,
         string FirstName,
         string LastName,
         string PhoneNumber,

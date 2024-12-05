@@ -19,9 +19,7 @@ namespace Infrastructure
     public static class DependencyInjection
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection service, IConfiguration config)
-        {
-
-
+        { 
             service.AddApplicationDbContext(config.GetConnectionString("DefaultConnection"));
             service.AddDapperSupport(config.GetConnectionString("DefaultConnection"));
             service.AddScoped<IUnitOfWork, UnitOfWork>();

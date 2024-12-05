@@ -19,7 +19,7 @@ namespace Infrastructure.Persistence.DataContext
         public static IServiceCollection AddApplicationDbContext(this IServiceCollection services, string connectionString)
         { 
             services.AddDbContext<InsuranceDBContext>(options =>
-               options.UseNpgsql(connectionString));               
+               options.UseSqlServer(connectionString));               
             return services;
         }
         public static IServiceCollection AddDapperSupport(this IServiceCollection services, string connectionString)

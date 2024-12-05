@@ -73,8 +73,8 @@ namespace Application.Features.Medical.Commands.CreateMedical
                 await _unitOfWork.SaveAsync(cancellationToken);
                 var item = command.Commands.FirstOrDefault();
 
-
-                return new CreateMedicalCommandResponse($"{item.FirstName} {item.FirstName}", item.Citizenship, item.IdNumber, item.DateOfBirth, item.PhoneNumber, item.Email);
+                
+                return new CreateMedicalCommandResponse($"{item.FirstName} {item.FirstName}", item.Citizenship, item.IdNumber, new DateOnly(item.DateOfBirth.Year, item.DateOfBirth.Month, item.DateOfBirth.Day), item.PhoneNumber, item.Email);
 
 
             }

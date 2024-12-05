@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Travel\**" />
+    <EmbeddedResource Remove="Features\Travel\**" />
+    <None Remove="Features\Travel\**" />
+  </ItemGroup>
+
+  <ItemGroup>
 
 	  <PackageReference Include="MediatR" Version="11.0.0" />
 	  <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
@@ -17,9 +23,5 @@
   </ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Domain\Domain.csproj" /> 
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Features\Medical\Queries\GetMedicalList\" />
-	  <Folder Include="Features\Travel\" />
 	</ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 ﻿using Application.Common.Contracts.Persistence.Command;
 using Application.Common.Contracts.Persistence.Query;
 using Dapper;
+using Domain.Entities;
 using Infrastructure.Persistence.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,27 +27,22 @@ namespace Infrastructure.Persistence.Repoistory.Queries
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             using var connection =  _context.CreateConnection();
-            string sql = $"SELECT * FROM {typeof(TEntity).Name}s";
+            connection.Open();
 
-            //if (connection.State == ConnectionState.Closed)
-            //{
-            //    await connection.OpenAsync();
-            //}
-             
+            var updatedTypeName = typeof(TEntity).Name.Replace("y", "ie");
+            string sql = $"SELECT * FROM {updatedTypeName}s"; 
             return await connection.QueryAsync<TEntity>(sql); 
         }
 
         public async Task<TEntity?> GetByIdAsync(Guid id)
         {
             using var connection =  _context.CreateConnection();
-            string sql = $"SELECT * FROM {typeof(TEntity).Name}s Where Id = @Id";
+            connection.Open();
 
-            //if (connection.State == ConnectionState.Closed)
-            //{
-            //    await connection.OpenAsync();
-            //}
-
+            var updatedTypeName = typeof(TEntity).Name.Replace("y", "ie");
+            string sql = $"SELECT * FROM {updatedTypeName}s Where Id = @Id";  
             return await connection.QueryFirstOrDefaultAsync<TEntity>(sql, new { Id = id });
+             
         }
 
     }

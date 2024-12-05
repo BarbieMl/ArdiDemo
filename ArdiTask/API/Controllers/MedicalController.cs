@@ -1,12 +1,12 @@
 ﻿using API.Request.CustomerRequest;
+using Application.Features.Customers.Queries.GetCustomer;
 using Application.Features.Medical.Commands.CreateMedical;
 using Application.Features.Medical.Commands.DeleteMedical;
 using Application.Features.Medical.Commands.UpdateMedical;
+using Application.Features.Medical.Queries.GetAllMedical;
+using Application.Features.Medical.Queries.GetByIdMedical;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace API.Controllers
 {
     [Route("api/[controller]")]
@@ -20,16 +20,19 @@ namespace API.Controllers
             _mediator = mediator;
 
         }
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet("GetCustomer")]
+        public async Task<ActionResult<GetMedicalQueryResponse>> GetByIdAsync([FromQuery] GetMedicalQuery query, CancellationToken token)
         {
-            return new string[] { "value1", "value2" };
+            var result = await _mediator.Send(query, token);
+            return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("GetAllMedicalAsync")]
+        public async Task<ActionResult<IEnumerable<GetAllMedicalQueryResponse>>> GetAllMedicalAsync(CancellationToken token)
         {
-            return "value";
+            var result = await _mediator.Send(new GetAllMedicalQuery(), token);
+            return Ok(result); 
+
         }
 
         [HttpPost("CreateMedicalPolicy")]
@@ -39,7 +42,7 @@ namespace API.Controllers
            return Ok(result);
         }
 
-        [HttpPut("UpdateMedicalPolicy")]
+        [HttpPatch("UpdateMedicalPolicy")]
         public async Task<ActionResult<UpdateMedicalCommandResponse>> UpdateMedicalPolicy([FromBody] UpdateMedicalCommand command, CancellationToken token)
         {
             var result = await _mediator.Send(command, token);

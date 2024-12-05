@@ -11,7 +11,7 @@ namespace Domain.Entities
     { 
         public string IdNumber { get; set; }    
         public string PassportNumber { get; set; }
-        public DateOnly DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
@@ -20,7 +20,7 @@ namespace Domain.Entities
         public string Citizenship { get; set; }
         public string Address { get; set; }
 
-        public ICollection<MedicalPolicy> MedicalPolicies { get; set; } = new List<MedicalPolicy>();
-        public ICollection<TravelPolicy> TravelPolicies { get; set; } = new List<TravelPolicy>();
+        public ICollection<MedicalPolicy>? MedicalPolicies { get; set; } = new List<MedicalPolicy>();
+        public ICollection<TravelPolicy>? TravelPolicies { get; set; } = new List<TravelPolicy>();
     }
 }
