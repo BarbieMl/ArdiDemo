@@ -12,11 +12,11 @@ namespace Infrastructure.Persistence.Repoistory.Commands
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        private readonly InsuranceDBContext _context;
+        private readonly InsuranceDBContext context;
         private readonly DbSet<TEntity> _entities;
         public GenericRepository(InsuranceDBContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            this.context = context ?? throw new ArgumentNullException(nameof(context));
             _entities = context.Set<TEntity>();
         }
         public async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate)
@@ -32,7 +32,7 @@ namespace Infrastructure.Persistence.Repoistory.Commands
 
         public async Task SaveAsync()
         {
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         public void Delete(Guid id)
         {
@@ -44,7 +44,7 @@ namespace Infrastructure.Persistence.Repoistory.Commands
         public async Task Update(TEntity entity)
         {
             _entities.Attach(entity);
-            _context.Entry(entity).State = EntityState.Modified;
+            context.Entry(entity).State = EntityState.Modified;
 
             //_entities.Update(entity);   
         }
