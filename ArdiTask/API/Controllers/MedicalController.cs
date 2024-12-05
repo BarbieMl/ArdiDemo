@@ -1,5 +1,4 @@
-﻿using API.Request.CustomerRequest;
-using Application.Features.Customers.Queries.GetCustomer;
+﻿using API.Request.CustomerRequest;  
 using Application.Features.Medical.Commands.CreateMedical;
 using Application.Features.Medical.Commands.DeleteMedical;
 using Application.Features.Medical.Commands.UpdateMedical;

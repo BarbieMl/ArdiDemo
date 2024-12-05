@@ -1,7 +1,11 @@
 ﻿using API.Request.CustomerRequest;
+using Application.Features.Customers.Commands.DeleteCustomer;
+using Application.Features.Customers.Commands.UpdateCustomer;
 using Application.Features.Customers.Queries.GetAllCustomer;
 using Application.Features.Customers.Queries.GetCustomer;
 using Application.Features.Medical.Commands.CreateMedical;
+using Application.Features.Medical.Commands.DeleteMedical;
+using Application.Features.Medical.Commands.UpdateMedical;
 using Application.Features.Medical.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -33,7 +37,21 @@ namespace API.Controllers
         { 
             var result = await _mediator.Send(new GetAllCustomerQuery(), token);
             return Ok(result);
-        } 
+        }
+
+        [HttpDelete("DeletePolicyHolder")]
+        public async Task<ActionResult<bool>> DeletePolicyHolder([FromBody] DeleteCustomerCommand command, CancellationToken token)
+        {
+            var result = await _mediator.Send(command, token);
+            return Ok(result);
+        }
+
+        [HttpPatch("UpdateCustomerPolicy")]
+        public async Task<ActionResult<UpdateCustomerCommandResponse>> UpdateCustomerPolicy([FromBody] UpdateCustomerCommand command, CancellationToken token)
+        {
+            var result = await _mediator.Send(command, token);
+            return Ok(result);
+        }
     }
 }
  
