@@ -28,7 +28,7 @@ namespace Infrastructure.Persistence.DataContext
            new DapperInsuranceDBContext(connectionString));
 
             services.AddScoped<IDbConnection>(sp =>
-           new NpgsqlConnection(connectionString));
+           new SqlConnection(connectionString));
             return services;
         }
 
