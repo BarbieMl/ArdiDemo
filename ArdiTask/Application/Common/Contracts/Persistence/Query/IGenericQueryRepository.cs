@@ -11,6 +11,5 @@ namespace Application.Common.Contracts.Persistence.Query
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<TEntity?> GetByIdAsync(Guid id);
-       // Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate);
     }
 }

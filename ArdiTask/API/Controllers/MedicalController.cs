@@ -1,5 +1,7 @@
 ﻿using API.Request.CustomerRequest;
 using Application.Features.Medical.Commands.CreateMedical;
+using Application.Features.Medical.Commands.DeleteMedical;
+using Application.Features.Medical.Commands.UpdateMedical;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,38 +20,37 @@ namespace API.Controllers
             _mediator = mediator;
 
         }
-        // GET: api/<MedicalInsuranceController>
         [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/<MedicalInsuranceController>/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/<MedicalInsuranceController>
-        [HttpPost("CreatePolicy")]
-        public async Task<ActionResult<CreateMedicalCommandResponse>> CreatePolicy([FromBody] CreateMedicalCommands command, CancellationToken token)
+        [HttpPost("CreateMedicalPolicy")]
+        public async Task<ActionResult<CreateMedicalCommandResponse>> CreateMedicalPolicy([FromBody] CreateMedicalCommands command, CancellationToken token)
         {
             var result = await _mediator.Send(command, token);
            return Ok(result);
         }
 
-        // PUT api/<MedicalInsuranceController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("UpdateMedicalPolicy")]
+        public async Task<ActionResult<UpdateMedicalCommandResponse>> UpdateMedicalPolicy([FromBody] UpdateMedicalCommand command, CancellationToken token)
         {
+            var result = await _mediator.Send(command, token);
+            return Ok(result);
         }
 
-        // DELETE api/<MedicalInsuranceController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("DeleteMedicalPolicy")]
+        public async Task<ActionResult<bool>> DeleteMedicalPolicy([FromBody] DeleteMedicalCommand command, CancellationToken token)
         {
+            var result = await _mediator.Send(command, token);
+            return Ok(result);
         }
     }
 }

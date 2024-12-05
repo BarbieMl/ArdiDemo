@@ -10,7 +10,7 @@ namespace Application.Common.Contracts.Persistence.Query
     public interface ICustomerQueryRepository : IGenericQueryRepository<Customer>
     {
         Task<IEnumerable<Customer>> GetAllWithRelationsAsync();
-        Task<Customer> GetWithRelationsAsync(Guid Id);
+        Task<Customer> GetByIdAsync(Guid Id);
         Task<Customer?> GetByIdNumber(string IdNumber);
     }
 }

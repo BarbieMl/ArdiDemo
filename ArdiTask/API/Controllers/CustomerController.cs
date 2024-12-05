@@ -1,4 +1,7 @@
 ﻿using API.Request.CustomerRequest;
+using Application.Features.Customer.Queries.GetCustomer;
+using Application.Features.Medical.Commands.CreateMedical;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,27 +11,27 @@ namespace API.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        [HttpGet("GetWithPolicies")]
-        public async Task<ActionResult<int>> GetWithPolicies()
+        private readonly IMediator _mediator;
+        public CustomerController(IMediator mediator)
         {
-            return Ok();
-        }
-        [HttpGet("GetAllWithPolicies")]
-        public async Task<ActionResult<int>> GetAllWithPolicies()
-        {
-            return Ok();
-        }
 
-        [HttpGet("Get")]
-        public async Task<ActionResult<int>> Get()
+            _mediator = mediator;
+
+        }
+        
+
+        [HttpGet("GetByIdAsync")]
+        public async Task<ActionResult<GetCustomerQueryResponse>> GetByIdAsync([FromBody] GetCustomerQuery query, CancellationToken token)
         {
-            return Ok();
+            var result = _mediator.Send(query);
+            return Ok(result);
         }
         [HttpGet("GetAll")]
         public async Task<ActionResult<int>> GetAll()
         {
             return Ok();
         }
+        // to do : customer edit, customer remove, costomer get
     }
 }
  

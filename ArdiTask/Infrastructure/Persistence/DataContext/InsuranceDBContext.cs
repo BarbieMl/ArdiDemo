@@ -14,6 +14,7 @@ namespace Infrastructure.Persistence.DataContext
 
             builder.Entity<TravelPolicy>()
                  .HasOne(x => x.Customer).WithMany(x => x.TravelPolicies).HasForeignKey(x => x.CustomerId);
+                 
         }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<MedicalPolicy> MedicalPolicies { get; set; }

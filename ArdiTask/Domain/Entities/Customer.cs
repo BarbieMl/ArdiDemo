@@ -10,7 +10,7 @@ namespace Domain.Entities
     public class Customer : BaseEntity
     { 
         public string IdNumber { get; set; }    
-        public string PassportNumberm { get; set; }
+        public string PassportNumber { get; set; }
         public DateOnly DateOfBirth { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -22,14 +22,9 @@ namespace Infrastructure
         {
 
 
-           // service.AddApplicationDbContext(config.GetConnectionString("ardiDB"));
+            service.AddApplicationDbContext(config.GetConnectionString("ardiDB"));
             service.AddDapperSupport(config.GetConnectionString("ardiDB"));
-
-            service.AddDbContext<InsuranceDBContext>(options =>
-             options.UseNpgsql(config.GetConnectionString("ardiDB")));
-
             service.AddScoped<IUnitOfWork, UnitOfWork>();
-
 
             service.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             service.AddScoped(typeof(IGenericQueryRepository<>), typeof(GenericQueryRepository<>));

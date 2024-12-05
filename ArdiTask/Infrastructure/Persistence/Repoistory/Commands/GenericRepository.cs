@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,6 +18,12 @@ namespace Infrastructure.Persistence.Repoistory.Commands
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _entities = context.Set<TEntity>();
+        }
+        public async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+             return await _entities
+                .Where(predicate)
+                .FirstOrDefaultAsync(); 
         }
         public async Task AddAsync(TEntity entity)
         {

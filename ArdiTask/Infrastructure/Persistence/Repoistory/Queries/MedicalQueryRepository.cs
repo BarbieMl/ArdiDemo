@@ -11,7 +11,7 @@ namespace Infrastructure.Persistence.Repoistory.Queries
 {
     public class MedicalQueryRepository : GenericQueryRepository<MedicalPolicy>, IMedicalQueryRepository
     {
-        public MedicalQueryRepository(InsuranceDBContext context)
+        public MedicalQueryRepository(DapperInsuranceDBContext context)
             : base(context)
         {
         }

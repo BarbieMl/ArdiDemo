@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using Npgsql;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Persistence.DataContext
 {
@@ -18,13 +19,13 @@ namespace Infrastructure.Persistence.DataContext
         public static IServiceCollection AddApplicationDbContext(this IServiceCollection services, string connectionString)
         { 
             services.AddDbContext<InsuranceDBContext>(options =>
-                options.UseNpgsql(connectionString));
+               options.UseNpgsql(connectionString));               
             return services;
         }
         public static IServiceCollection AddDapperSupport(this IServiceCollection services, string connectionString)
         {
-            //services.AddScoped<DapperInsuranceDBContext>(sp =>
-            //    new DapperInsuranceDBContext(connectionString));  // Make sure connectionString is provided properly
+            services.AddScoped<DapperInsuranceDBContext>(sp =>
+                new DapperInsuranceDBContext(connectionString)); 
 
             services.AddScoped<IDbConnection>(_ => new NpgsqlConnection(connectionString));
             return services;

@@ -11,7 +11,7 @@ namespace Infrastructure.Persistence.Repoistory.Queries
 {
     public class TravelQueryRepository : GenericQueryRepository<TravelPolicy>, ITravelQueryRepository
     {
-        public TravelQueryRepository(InsuranceDBContext context)
+        public TravelQueryRepository(DapperInsuranceDBContext context)
             : base(context)
         {
         }

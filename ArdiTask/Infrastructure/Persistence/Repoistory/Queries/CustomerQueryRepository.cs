@@ -12,32 +12,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Dapper.SqlMapper;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Infrastructure.Persistence.Repoistory.Queries
 {
     public class CustomerQueryRepository : GenericQueryRepository<Customer>, ICustomerQueryRepository
     {
-        private readonly InsuranceDBContext _context;
-        public CustomerQueryRepository(InsuranceDBContext context)
+        private readonly DapperInsuranceDBContext _context;
+        public CustomerQueryRepository(DapperInsuranceDBContext context)
             : base(context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
+        //public async Task<IEnumerable<Company>> GetCompanies()
+        //{
+        //    var query = "SELECT Id, Name, Address, Country FROM Companies";
+
+        //    using (var connection = _context.CreateConnection())
+        //    {
+        //        var companies = await connection.QueryAsync<Company>(query);
+        //        return companies.ToList();
+        //    }
+        //}
 
         public async Task<IEnumerable<Customer>> GetAllWithRelationsAsync()
-        {
-            using var connection = _context.Database.GetDbConnection();
-             
+        { 
             string sql = @"
             SELECT *
             FROM Customers c
             LEFT JOIN MedicalPolicies mp ON c.Id = mp.CustomerId AND mp.IsActive = 1
             LEFT JOIN TravelPolicies tp ON c.Id = tp.CustomerId AND tp.IsActive = 1";
 
-            if (connection.State == ConnectionState.Closed)
-            {
-                await connection.OpenAsync();
-            }
+            using var connection = _context.CreateConnection();
+ 
              
             var customersDictionary = new Dictionary<Guid, Customer>();
 
@@ -74,31 +81,48 @@ namespace Infrastructure.Persistence.Repoistory.Queries
         {
             try
             {
-                using var connection = _context.Database.GetDbConnection();
-                string sql = $"SELECT * FROM Customers Where IdNumber = @IdNumber";
+                using var connection = _context.CreateConnection();
+                string sql = "SELECT * FROM Customers WHERE IdNumber = @IdNumber";
+                var par = new DynamicParameters();
+                // Optionally check if the connection is closed (although Dapper usually opens it automatically)
+                //if (connection.State == ConnectionState.Closed)
+                //{
+                //    await connection.OpenAsync();
+                //}
 
-                if (connection.State == ConnectionState.Closed)
-                {
-                    await connection.OpenAsync();
-                }
+                var result = await connection.QueryAsync<Customer?>(sql, new { IdNumber = IdNumber }, commandType: System.Data.CommandType.StoredProcedure);
+                return (Customer?)result;
 
-                var result = await connection.QueryFirstOrDefaultAsync<Customer?>(sql, new { IdNumber = IdNumber });
-                return result;
             }
+
+            //try
+            //{
+
+            //    using var connection = _context.CreateConnection();
+            //    string sql = $"SELECT * FROM Customers Where IdNumber = @IdNumber";
+
+            //    //if (connection.State == ConnectionState.Closed)
+            //    //{
+            //    //    await connection.OpenAsync();
+            //    //}
+
+            //    var result = await connection.QueryFirstOrDefaultAsync<Customer?>(sql, new { IdNumber = IdNumber });
+            //    return result;
+            //}
             catch (NpgsqlException ex) when (ex.SqlState == "42P01")
-            { 
-                return null; 
+            {
+                return null;
             }
             catch (Exception ex)
-            { 
+            {
                 throw new Exception(ex.Message);
             }
 
         }
 
-        public async Task<Customer> GetWithRelationsAsync(Guid Id)
+        public async Task<Customer> GetByIdAsync(Guid Id)
         {
-            using var connection = _context.Database.GetDbConnection();
+            using var connection = _context.CreateConnection();
 
             string sql = @"
                 SELECT *
@@ -107,10 +131,10 @@ namespace Infrastructure.Persistence.Repoistory.Queries
                 LEFT JOIN TravelPolicies tp ON c.Id = tp.CustomerId AND tp.IsActive = 1
                 WHERE c.Id = @Id";
 
-            if (connection.State == ConnectionState.Closed)
-            {
-                await connection.OpenAsync();
-            }
+            //if (connection.State == ConnectionState.Closed)
+            //{
+            //    await connection.OpenAsync();
+            //}
 
             Customer customerEntry = default;
 

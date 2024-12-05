@@ -14,6 +14,5 @@ namespace Application.Common.Contracts.Persistence.UnitOfWork
         IMedicalRepository MedicalRepository { get; }
         ITravelRepository TravelRepository { get; }
         Task SaveAsync(CancellationToken cancellationToken); 
-        void Save();   
     }
 }

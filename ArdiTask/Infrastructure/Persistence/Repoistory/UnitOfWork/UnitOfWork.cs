@@ -2,9 +2,7 @@
 using Application.Common.Contracts.Persistence.UnitOfWork;
 using Infrastructure.Persistence.DataContext;
 using Infrastructure.Persistence.Repoistory.Commands;
-using Infrastructure.Persistence.Repoistory.EFCore;
-using Microsoft.EntityFrameworkCore;
-using System.Data; 
+using Infrastructure.Persistence.Repoistory.EFCore; 
 
 namespace Infrastructure.Persistence.Repoistory.UnitOfWork
 {
@@ -33,13 +31,6 @@ namespace Infrastructure.Persistence.Repoistory.UnitOfWork
         public async Task SaveAsync(CancellationToken cancellationToken)
         {
             await _context.SaveChangesAsync(cancellationToken);
-        }
-        public void Save()
-        {
-            if (_disposed)
-                throw new ObjectDisposedException(nameof(UnitOfWork));
-
-            _context.SaveChanges();
         }
         public void Dispose()
         {
