@@ -26,7 +26,9 @@ namespace Infrastructure.Persistence.Repoistory.Queries
             SELECT *
             FROM Customers c
             LEFT JOIN MedicalPolicies mp ON c.Id = mp.CustomerId AND mp.IsActive = 1
-            LEFT JOIN TravelPolicies tp ON c.Id = tp.CustomerId AND tp.IsActive = 1";
+            LEFT JOIN TravelPolicies tp ON c.Id = tp.CustomerId AND tp.IsActive = 1
+            ORDER BY c.IdNumber"
+            ;
 
             using var connection =   _context.CreateConnection();
             connection.Open();
@@ -39,7 +41,8 @@ namespace Infrastructure.Persistence.Repoistory.Queries
                     { 
                         customer.MedicalPolicies = customer.MedicalPolicies ?? new List<MedicalPolicy>();
                         customer.TravelPolicies = customer.TravelPolicies ?? new List<TravelPolicy>();
-                        customerEntry = customer;
+                        if(customerEntry is null || customerEntry?.IdNumber != customer.IdNumber)
+                            customerEntry = customer;
                     }
                      
                     if (medicalPolicy != null)
@@ -82,14 +85,15 @@ namespace Infrastructure.Persistence.Repoistory.Queries
                    { 
                            if (customer is not null)
                            {
-                               customer.MedicalPolicies = customer.MedicalPolicies ?? new List<MedicalPolicy>();
-                               customer.TravelPolicies = customer.TravelPolicies ?? new List<TravelPolicy>();
-
-                               customerEntry = customer;
+                               if(customerEntry is null)
+                                {
+                                    customer.MedicalPolicies = customer.MedicalPolicies ?? new List<MedicalPolicy>();
+                                    customer.TravelPolicies = customer.TravelPolicies ?? new List<TravelPolicy>();
+                                    customerEntry = customer;
+                                }
 
                                if (medicalPolicy != null)
                                {
-                              
                                    customerEntry.MedicalPolicies.Add(medicalPolicy);
                                }
 
