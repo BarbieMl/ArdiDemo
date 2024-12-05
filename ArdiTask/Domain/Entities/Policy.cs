@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Enumeration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +16,7 @@ namespace Domain.Entities
         public DateTime EndDate { get; set; }
         public decimal PremiumAmount { get; set; }
         public string Insurer {  get; set; }
+        public TypeOfPaymentPeriod TypeOfPaymentPeriod { get; set; }
+
     }
 }

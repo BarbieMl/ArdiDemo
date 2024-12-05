@@ -9,8 +9,7 @@ namespace Domain.Entities
 {
     public class TravelPolicy : Policy
     {       
-        public TypeOfTrip TypeOfTrip { get; set; }
-        public TypeOfPaymentPeriod TypeOfPaymentPeriod { get; set; }
+        public TypeOfTrip TypeOfTrip { get; set; } 
         public string Countries {  get; set; }
 
     }

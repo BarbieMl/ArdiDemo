@@ -2,30 +2,32 @@
 using Application.Common.Contracts.Persistence.Command; 
 using Application.Common.Contracts.Persistence.UnitOfWork;
 using Domain.Entities;
+using Domain.Enumeration;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Application.Features.Medical.Commands.CreateMedical
+namespace Application.Features.Travel.Commands.CreateTravel
 {
-    public class CreateMedicalCommandHandler : IRequestHandler<CreateMedicalCommands, CreateMedicalCommandResponse>
+    public class CreateTravelCommandHandler : IRequestHandler<CreateTravelCommands, CreateTravelCommandResponse>
     {
-        private readonly IMedicalRepository _medicalRepository;
+        private readonly ITravelRepository _travel;
         private readonly ICustomerRepository _customer;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CreateMedicalCommandHandler(IMedicalRepository medicalRepository, 
+        public CreateTravelCommandHandler(ITravelRepository travel, 
              ICustomerRepository customer,
              IUnitOfWork unitOfWork)
         {
-            _medicalRepository = medicalRepository;
+            _travel = travel;
             _customer = customer;
             _unitOfWork = unitOfWork;   
         }
          
-        public async Task<CreateMedicalCommandResponse> Handle(CreateMedicalCommands command, CancellationToken cancellationToken)
+        public async Task<CreateTravelCommandResponse> Handle(CreateTravelCommands command, CancellationToken cancellationToken)
         {
             try
             {
 
-                foreach (CreateMedicalCommand request in command.Commands)
+                foreach (CreateTravelCommand request in command.Commands)
                 {
                     Customer customer;
                     var existingCustomer = await _customer.FindAsync(x => x.IdNumber == request.IdNumber);
@@ -49,12 +51,12 @@ namespace Application.Features.Medical.Commands.CreateMedical
                             Gender = request.Gender,
                             Citizenship = request.Citizenship,
                             Address = request.Address,
-                            IsActive = true
+                            IsActive = true 
                         };
                         await _customer.AddAsync(customer);
                     }
 
-                    var policy = new MedicalPolicy
+                    var policy = new TravelPolicy
                     {
                         Id = Guid.NewGuid(),
                         CreateDate = DateTime.Now,
@@ -63,20 +65,21 @@ namespace Application.Features.Medical.Commands.CreateMedical
                         TypeOfPaymentPeriod = request.TypeOfPaymentPeriod,
                         StartDate = request.StartDate,
                         EndDate = request.EndDate,
-                        PremiumAmount = request.PremiumAmount,
-                        Provider = request.Provider,
+                        PremiumAmount = request.PremiumAmount, 
                         Insurer = customer.IdNumber,
-                        IsActive = true
-                    };
+                        IsActive = true,
+                        TypeOfTrip = request.TypeOfTrip,
+                        Countries = request.Countries
+                };
 
-                    await _medicalRepository.AddAsync(policy);
+                    await _travel.AddAsync(policy);
                 }
 
                 await _unitOfWork.SaveAsync(cancellationToken);
                 var item = command.Commands.FirstOrDefault();
 
                 
-                return new CreateMedicalCommandResponse($"{item.FirstName} {item.FirstName}", item.Citizenship, item.IdNumber, new DateOnly(item.DateOfBirth.Year, item.DateOfBirth.Month, item.DateOfBirth.Day), item.PhoneNumber, item.Email);
+                return new CreateTravelCommandResponse($"{item.FirstName} {item.FirstName}", item.Citizenship, item.IdNumber, new DateOnly(item.DateOfBirth.Year, item.DateOfBirth.Month, item.DateOfBirth.Day), item.PhoneNumber, item.Email);
 
 
             }

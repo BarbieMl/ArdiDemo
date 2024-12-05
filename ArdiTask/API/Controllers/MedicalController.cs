@@ -20,15 +20,15 @@ namespace API.Controllers
             _mediator = mediator;
 
         }
-        [HttpGet("GetCustomer")]
-        public async Task<ActionResult<GetMedicalQueryResponse>> GetByIdAsync([FromQuery] GetMedicalQuery query, CancellationToken token)
+        [HttpGet("GetMedicalPolicy")]
+        public async Task<ActionResult<GetMedicalQueryResponse>> GetMedicalPolicy([FromQuery] GetMedicalQuery query, CancellationToken token)
         {
             var result = await _mediator.Send(query, token);
             return Ok(result);
         }
 
-        [HttpGet("GetAllMedicalAsync")]
-        public async Task<ActionResult<IEnumerable<GetAllMedicalQueryResponse>>> GetAllMedicalAsync(CancellationToken token)
+        [HttpGet("GetAllMedicalPolicyAsync")]
+        public async Task<ActionResult<IEnumerable<GetAllMedicalQueryResponse>>> GetAllMedicalPolicyAsync(CancellationToken token)
         {
             var result = await _mediator.Send(new GetAllMedicalQuery(), token);
             return Ok(result); 
