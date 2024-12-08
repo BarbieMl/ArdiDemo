@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Infrastructure
+namespace API.ExceptionHanlder
 {
     public class GlobalExceptionHanlder : IExceptionHandler
     {
