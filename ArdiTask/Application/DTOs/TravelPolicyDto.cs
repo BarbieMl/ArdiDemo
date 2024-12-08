@@ -11,7 +11,7 @@ namespace Application.DTOs
     (
         Guid Id,
         DateTime CreateDate,
-        bool IsActive,
+        bool IsDeleted,
         string PolicyNumber,
         DateTime StartDate,
         DateTime EndDate,

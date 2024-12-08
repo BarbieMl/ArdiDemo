@@ -11,7 +11,7 @@ namespace Application.Features.Medical.Queries.GetByIdMedical
     public record GetMedicalQueryResponse(
         Guid Id,
         DateTime CreateDate,
-        bool IsActive,
+        bool IsDeleted,
         string PolicyNumber,
         DateTime StartDate,
         DateTime EndDate,

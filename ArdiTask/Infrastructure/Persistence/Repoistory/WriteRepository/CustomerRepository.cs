@@ -16,8 +16,8 @@ namespace Infrastructure.Persistence.Repoistory.Commands
         public async Task<Customer> GetCustomer(Guid customerId, CancellationToken cancellationToken)
         {
             return await _context.Customers
-                .Include(c => c.MedicalPolicies)   
-                .Include(c => c.TravelPolicies)   
+                .Include(c => c.MedicalPolicies)
+                .Include(c => c.TravelPolicies)
                 .FirstOrDefaultAsync(c => c.Id == customerId, cancellationToken);
         }
     }

@@ -12,8 +12,8 @@ namespace Application.Features.Medical.Queries.GetByIdMedical
     public class GetMedicalQueryHandler : IRequestHandler<GetMedicalQuery, GetMedicalQueryResponse>
     {
 
-        private readonly IMedicalQueryRepository _medical;
-        public GetMedicalQueryHandler(IMedicalQueryRepository medical)
+        private readonly IMedicalReadRepository _medical;
+        public GetMedicalQueryHandler(IMedicalReadRepository medical)
         {
             _medical = medical;
         }
@@ -24,7 +24,7 @@ namespace Application.Features.Medical.Queries.GetByIdMedical
             return new GetMedicalQueryResponse(
                 Id: data.Id,
                 CreateDate: data.CreateDate,
-                IsActive: data.IsActive,
+                IsDeleted: data.IsDeleted,
                 PolicyNumber: data.PolicyNumber,
                 StartDate: data.StartDate,
                 EndDate: data.EndDate,

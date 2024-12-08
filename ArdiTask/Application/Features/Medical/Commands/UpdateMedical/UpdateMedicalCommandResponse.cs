@@ -16,6 +16,6 @@ namespace Application.Features.Medical.Commands.UpdateMedical
         string Provider,
         string Insurer,
         TypeOfPaymentPeriod TypeOfPaymentPeriod,
-        bool IsActive
+        bool IsDeleted
     );
 }

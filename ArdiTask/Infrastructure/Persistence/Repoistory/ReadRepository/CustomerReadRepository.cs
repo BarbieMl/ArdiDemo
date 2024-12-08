@@ -9,11 +9,11 @@ using static Dapper.SqlMapper;
 namespace Infrastructure.Persistence.Repoistory.Queries
 {
     
-    public class CustomerQueryRepository : GenericQueryRepository<Customer>, ICustomerQueryRepository
+    public class CustomerReadRepository : GenericReadRepository<Customer>, ICustomerReadRepository
     {
         private readonly DapperInsuranceDBContext _context;
 
-        public CustomerQueryRepository(DapperInsuranceDBContext context
+        public CustomerReadRepository(DapperInsuranceDBContext context
             )
             : base(context)
         { 
@@ -25,8 +25,8 @@ namespace Infrastructure.Persistence.Repoistory.Queries
             string sql = @"
             SELECT *
             FROM Customers c
-            LEFT JOIN MedicalPolicies mp ON c.Id = mp.CustomerId AND mp.IsActive = 1
-            LEFT JOIN TravelPolicies tp ON c.Id = tp.CustomerId AND tp.IsActive = 1
+            LEFT JOIN MedicalPolicies mp ON c.Id = mp.CustomerId AND mp.IsDeleted = 0
+            LEFT JOIN TravelPolicies tp ON c.Id = tp.CustomerId AND tp.IsDeleted = 0
             ORDER BY c.IdNumber"
             ;
 
@@ -74,8 +74,8 @@ namespace Infrastructure.Persistence.Repoistory.Queries
                 string sql = @"
                 SELECT *
                 FROM Customers c
-                LEFT JOIN MedicalPolicies mp ON c.Id = mp.CustomerId AND mp.IsActive = 1
-                LEFT JOIN TravelPolicies tp ON c.Id = tp.CustomerId AND tp.IsActive = 1
+                LEFT JOIN MedicalPolicies mp ON c.Id = mp.CustomerId AND mp.IsDeleted = 0
+                LEFT JOIN TravelPolicies tp ON c.Id = tp.CustomerId AND tp.IsDeleted = 0
                 WHERE c.Id = @Id";
 
                 Customer customerEntry = default; 

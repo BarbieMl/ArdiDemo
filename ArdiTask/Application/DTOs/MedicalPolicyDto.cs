@@ -10,7 +10,7 @@ namespace Application.DTOs
     public record MedicalPolicyDto(
         Guid Id,
         DateTime CreateDate,
-        bool IsActive,
+        bool IsDeleted,
         string PolicyNumber,
         DateTime StartDate,
         DateTime EndDate,

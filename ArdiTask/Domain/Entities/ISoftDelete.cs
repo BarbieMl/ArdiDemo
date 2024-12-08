@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class BaseEntity : ISoftDelete 
+    public interface ISoftDelete
     {
-        public Guid Id { get; set; }
-        public DateTime CreateDate { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime? DeletedAt { get; set; }
     }

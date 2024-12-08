@@ -1,5 +1,4 @@
-﻿using API.Request.CustomerRequest;
-using Application.Features.Customers.Commands.DeleteCustomer;
+﻿using Application.Features.Customers.Commands.DeleteCustomer;
 using Application.Features.Customers.Commands.UpdateCustomer;
 using Application.Features.Customers.Queries.GetAllCustomer;
 using Application.Features.Customers.Queries.GetCustomer;
@@ -26,28 +25,28 @@ namespace API.Controllers
         }
         
 
-        [HttpGet("GetByIdAsync")]
-        public async Task<ActionResult<GetCustomerQueryResponse>> GetByIdAsync([FromQuery] GetCustomerQuery query, CancellationToken token)
+        [HttpGet("GetById")]
+        public async Task<ActionResult<GetCustomerQueryResponse>> GetById([FromQuery] GetCustomerQuery query, CancellationToken token)
         {
             var result = await _mediator.Send(query, token);
             return Ok(result);
         }
-        [HttpGet("GetAllAsync")]
-        public async Task<ActionResult<IEnumerable<GetCustomerQueryResponse>>> GetAllAsync(CancellationToken token)
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<IEnumerable<GetCustomerQueryResponse>>> GetAll(CancellationToken token)
         { 
             var result = await _mediator.Send(new GetAllCustomerQuery(), token);
             return Ok(result);
         }
 
-        [HttpDelete("DeletePolicyHolder")]
-        public async Task<ActionResult<bool>> DeletePolicyHolder([FromBody] DeleteCustomerCommand command, CancellationToken token)
+        [HttpDelete("Delete")]
+        public async Task<ActionResult<bool>> Delete([FromBody] DeleteCustomerCommand command, CancellationToken token)
         {
             var result = await _mediator.Send(command, token);
             return Ok(result);
         }
 
-        [HttpPatch("UpdateCustomerPolicy")]
-        public async Task<ActionResult<UpdateCustomerCommandResponse>> UpdateCustomerPolicy([FromBody] UpdateCustomerCommand command, CancellationToken token)
+        [HttpPatch("Update")]
+        public async Task<ActionResult<UpdateCustomerCommandResponse>> Update([FromBody] UpdateCustomerCommand command, CancellationToken token)
         {
             var result = await _mediator.Send(command, token);
             return Ok(result);

@@ -13,8 +13,8 @@ namespace Application.Features.Customers.Queries.GetAllCustomer
     public class GetAllCustomerQueryHandler : IRequestHandler<GetAllCustomerQuery, List<GetAllCustomerQueryResponse>>
     {
 
-        private readonly ICustomerQueryRepository _customer;
-        public GetAllCustomerQueryHandler(ICustomerQueryRepository customer)
+        private readonly ICustomerReadRepository _customer;
+        public GetAllCustomerQueryHandler(ICustomerReadRepository customer)
         {
             _customer = customer;
         }
@@ -29,7 +29,7 @@ namespace Application.Features.Customers.Queries.GetAllCustomer
                 var response = new GetAllCustomerQueryResponse(
                     Id: result.Id,
                     CreateDate: result.CreateDate,
-                    IsActive: result.IsActive,
+                    IsDeleted: result.IsDeleted,
                     IdNumber: result.IdNumber,
                     PassportNumber: result.PassportNumber,
                     DateOfBirth: new DateOnly(result.DateOfBirth.Year, result.DateOfBirth.Month, result.DateOfBirth.Day),
@@ -43,7 +43,7 @@ namespace Application.Features.Customers.Queries.GetAllCustomer
                     MedicalPolicies: result.MedicalPolicies?.Select(mp => new MedicalPolicyDto(
                         Id: mp.Id,
                         CreateDate: mp.CreateDate,
-                        IsActive: mp.IsActive,
+                        IsDeleted: mp.IsDeleted,
                         PolicyNumber: mp.PolicyNumber,
                         StartDate: mp.StartDate,
                         EndDate: mp.EndDate,
@@ -55,7 +55,7 @@ namespace Application.Features.Customers.Queries.GetAllCustomer
                     TravelPolicies: result.TravelPolicies?.Select(tp => new TravelPolicyDto(
                         Id: tp.Id,
                         CreateDate: tp.CreateDate,
-                        IsActive: tp.IsActive,
+                        IsDeleted: tp.IsDeleted,
                         PolicyNumber: tp.PolicyNumber,
                         StartDate: tp.StartDate,
                         EndDate: tp.EndDate,

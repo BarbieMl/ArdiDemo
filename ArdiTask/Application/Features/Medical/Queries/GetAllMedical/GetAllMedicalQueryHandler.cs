@@ -14,8 +14,8 @@ namespace Application.Features.Medical.Queries.GetAllMedical
     public class GetAllMedicalQueryHandler : IRequestHandler<GetAllMedicalQuery, List<GetAllMedicalQueryResponse>>
     {
 
-        private readonly IMedicalQueryRepository _medical;
-        public GetAllMedicalQueryHandler(IMedicalQueryRepository medical)
+        private readonly IMedicalReadRepository _medical;
+        public GetAllMedicalQueryHandler(IMedicalReadRepository medical)
         {
             _medical = medical;
         }
@@ -30,7 +30,7 @@ namespace Application.Features.Medical.Queries.GetAllMedical
                 var response = new GetAllMedicalQueryResponse(
                     Id: item.Id,
                     CreateDate: item.CreateDate,
-                    IsActive: item.IsActive,
+                    IsDeleted: item.IsDeleted,
                     PolicyNumber: item.PolicyNumber,
                     StartDate: item.StartDate,
                     EndDate: item.EndDate,

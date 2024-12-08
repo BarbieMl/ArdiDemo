@@ -10,7 +10,7 @@ namespace Application.Common.Contracts.Persistence.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable  
     {
-        ICustomerRepository CustomerRepository { get; }
+        ICustomerRepository Customers { get; }
         IMedicalRepository MedicalRepository { get; }
         ITravelRepository TravelRepository { get; }
         Task SaveAsync(CancellationToken cancellationToken); 

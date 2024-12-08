@@ -7,7 +7,7 @@ using Domain.Enumeration;
 
 namespace Domain.Entities
 {
-    public class Customer : BaseEntity
+    public class Customer : BaseEntity 
     { 
         public string IdNumber { get; set; }    
         public string PassportNumber { get; set; }

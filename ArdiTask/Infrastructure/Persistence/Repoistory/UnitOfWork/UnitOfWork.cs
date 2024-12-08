@@ -7,27 +7,27 @@ using Infrastructure.Persistence.Repoistory.EFCore;
 namespace Infrastructure.Persistence.Repoistory.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
-    {
+    {  
         private readonly InsuranceDBContext _context;
         private bool _disposed;
-         
 
-        public UnitOfWork(InsuranceDBContext dBContext)
+        public ICustomerRepository Customers { get; }
+
+        public IMedicalRepository MedicalRepository { get; }
+
+        public ITravelRepository TravelRepository { get; }
+
+        public UnitOfWork(InsuranceDBContext dBContext,
+            ICustomerRepository customerRepository,
+            IMedicalRepository medicalRepository,
+             ITravelRepository travelRepository)
         {
             _context = dBContext ?? throw new ArgumentNullException(nameof(dBContext));
+            Customers = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
+            MedicalRepository = medicalRepository ?? throw new ArgumentNullException(nameof(medicalRepository));
+            TravelRepository = travelRepository ?? throw new ArgumentNullException(nameof(travelRepository));
         }
-        private ICustomerRepository _customers;
-        private IMedicalRepository _medicalPolicies;
-        private ITravelRepository _travelRepository; 
-         
-
-        public ICustomerRepository CustomerRepository => _customers ??= new CustomerRepository(_context);
-
-        public IMedicalRepository MedicalRepository => _medicalPolicies ??= new MedicalRepository(_context);
-
-        public ITravelRepository TravelRepository => _travelRepository ??= new TravelRepository(_context);
- 
-
+       
         public async Task SaveAsync(CancellationToken cancellationToken)
         {
             await _context.SaveChangesAsync(cancellationToken);

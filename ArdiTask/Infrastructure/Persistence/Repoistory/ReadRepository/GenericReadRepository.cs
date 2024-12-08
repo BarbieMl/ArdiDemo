@@ -16,21 +16,21 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Repoistory.Queries
 {
-    public class GenericQueryRepository<TEntity> : IGenericQueryRepository<TEntity> where TEntity : class
+    public class GenericReadRepository<TEntity> : IGenericReadRepository<TEntity> where TEntity : class
     {
         private readonly DapperInsuranceDBContext _context; 
 
-        public GenericQueryRepository(DapperInsuranceDBContext context)
+        public GenericReadRepository(DapperInsuranceDBContext context)
         { 
             _context = context;
         }
+       
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             using var connection =  _context.CreateConnection();
             connection.Open();
-
-            var updatedTypeName = typeof(TEntity).Name.Replace("y", "ie");
-            string sql = $"SELECT * FROM {updatedTypeName}s"; 
+            string tableName = GetTableName<TEntity>(); 
+            string sql = $"SELECT * FROM {tableName}"; 
             return await connection.QueryAsync<TEntity>(sql); 
         }
 
@@ -38,11 +38,16 @@ namespace Infrastructure.Persistence.Repoistory.Queries
         {
             using var connection =  _context.CreateConnection();
             connection.Open();
-
-            var updatedTypeName = typeof(TEntity).Name.Replace("y", "ie");
-            string sql = $"SELECT * FROM {updatedTypeName}s Where Id = @Id";  
+            string tableName = GetTableName<TEntity>();
+            string sql = $"SELECT * FROM {tableName} Where Id = @Id";  
             return await connection.QueryFirstOrDefaultAsync<TEntity>(sql, new { Id = id });
              
+        }
+
+        private string GetTableName<TEntity>()
+        {
+            string typeName = typeof(TEntity).Name;
+            return typeName.EndsWith("y") ? typeName.Substring(0, typeName.Length - 1) + "ies" : typeName + "s";
         }
 
     }

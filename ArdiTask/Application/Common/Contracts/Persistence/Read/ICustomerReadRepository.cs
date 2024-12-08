@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace Application.Common.Contracts.Persistence.Query
 {
-    public interface ITravelQueryRepository : IGenericQueryRepository<TravelPolicy>
+    public interface ICustomerReadRepository : IGenericReadRepository<Customer>
     {
+        Task<IEnumerable<Customer>> GetAllCustomerAsync(); 
+        Task<Customer> GetCustomerByIdAsync(Guid Id); 
     }
 }

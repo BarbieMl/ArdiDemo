@@ -2,22 +2,17 @@
 using Application.Common.Contracts.Persistence.Command; 
 using Application.Common.Contracts.Persistence.UnitOfWork;
 using Domain.Entities;
+using Domain;
 
 namespace Application.Features.Medical.Commands.CreateMedical
 {
     public class CreateMedicalCommandHandler : IRequestHandler<CreateMedicalCommands, CreateMedicalCommandResponse>
-    {
-        private readonly IMedicalRepository _medicalRepository;
-        private readonly ICustomerRepository _customer;
+    { 
         private readonly IUnitOfWork _unitOfWork;
 
-        public CreateMedicalCommandHandler(IMedicalRepository medicalRepository, 
-             ICustomerRepository customer,
-             IUnitOfWork unitOfWork)
-        {
-            _medicalRepository = medicalRepository;
-            _customer = customer;
-            _unitOfWork = unitOfWork;   
+        public CreateMedicalCommandHandler(IUnitOfWork unitOfWork)
+        { 
+            _unitOfWork = unitOfWork;
         }
          
         public async Task<CreateMedicalCommandResponse> Handle(CreateMedicalCommands command, CancellationToken cancellationToken)
@@ -28,8 +23,8 @@ namespace Application.Features.Medical.Commands.CreateMedical
                 foreach (CreateMedicalCommand request in command.Commands)
                 {
                     Customer customer;
-                    var existingCustomer = await _customer.FindAsync(x => x.IdNumber == request.IdNumber);
-                    if (existingCustomer is not null && existingCustomer.IsActive)
+                    var existingCustomer = await _unitOfWork.Customers.FindAsync(x => x.IdNumber == request.IdNumber, cancellationToken);
+                    if (existingCustomer is not null && existingCustomer.IsDeleted)
                     {
                         customer = existingCustomer;
                     }
@@ -48,28 +43,26 @@ namespace Application.Features.Medical.Commands.CreateMedical
                             Email = request.Email,
                             Gender = request.Gender,
                             Citizenship = request.Citizenship,
-                            Address = request.Address,
-                            IsActive = true
+                            Address = request.Address
                         };
-                        await _customer.AddAsync(customer);
+                        await _unitOfWork.Customers.AddAsync(customer, cancellationToken);
                     }
-
+                    
                     var policy = new MedicalPolicy
                     {
                         Id = Guid.NewGuid(),
                         CreateDate = DateTime.Now,
                         CustomerId = customer.Id,
-                        PolicyNumber = $"P{Guid.NewGuid().ToString("N").Substring(0, 10)}",
+                        PolicyNumber = new PolicyNumberGenerator().GenerateRandomPolicyNumber(),
                         TypeOfPaymentPeriod = request.TypeOfPaymentPeriod,
                         StartDate = request.StartDate,
                         EndDate = request.EndDate,
                         PremiumAmount = request.PremiumAmount,
                         Provider = request.Provider,
-                        Insurer = customer.IdNumber,
-                        IsActive = true
+                        Insurer = customer.IdNumber
                     };
 
-                    await _medicalRepository.AddAsync(policy);
+                    await _unitOfWork.MedicalRepository.AddAsync(policy, cancellationToken);
                 }
 
                 await _unitOfWork.SaveAsync(cancellationToken);
@@ -86,7 +79,6 @@ namespace Application.Features.Medical.Commands.CreateMedical
             }
 
 
-        }
-
+        } 
     }
 }

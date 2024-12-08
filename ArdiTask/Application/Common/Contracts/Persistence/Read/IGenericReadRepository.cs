@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Common.Contracts.Persistence.Query
 {
-    public interface IGenericQueryRepository<TEntity>
+    public interface IGenericReadRepository<TEntity>
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<TEntity?> GetByIdAsync(Guid id);

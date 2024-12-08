@@ -13,7 +13,7 @@ namespace Application.Features.Travel.Commands.UpdateTravel
         string Provider,
         string Insurer,
         TypeOfPaymentPeriod TypeOfPaymentPeriod,
-        bool IsActive,
+        bool IsDeleted,
         TypeOfTrip TypeOfTrip,
         string Countries
     ) : IRequest<UpdateTravelCommandResponse>;

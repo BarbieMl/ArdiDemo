@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Common.Contracts.Persistence.Query
 {
-    public interface ICustomerQueryRepository : IGenericQueryRepository<Customer>
+    public interface IMedicalReadRepository : IGenericReadRepository<MedicalPolicy>
     {
-        Task<IEnumerable<Customer>> GetAllCustomerAsync(); 
-        Task<Customer> GetCustomerByIdAsync(Guid Id); 
     }
 }

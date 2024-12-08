@@ -1,5 +1,4 @@
-﻿
-using Application.Features.Travel.Commands.CreateTravel;
+﻿using Application.Features.Travel.Commands.CreateTravel;
 using Application.Features.Travel.Commands.DeleteTravel;
 using Application.Features.Travel.Commands.UpdateTravel;
 using Application.Features.Travel.Queries.GetAllMedical;
@@ -22,37 +21,37 @@ namespace API.Controllers
             _mediator = mediator;
 
         }
-        [HttpGet("GetTravelPolicy")]
-        public async Task<ActionResult<GetTravelQueryResponse>> GetTravelPolicy([FromQuery] GetTravelQuery query, CancellationToken token)
+        [HttpGet("Get")]
+        public async Task<ActionResult<GetTravelQueryResponse>> Get([FromQuery] GetTravelQuery query, CancellationToken token)
         {
             var result = await _mediator.Send(query, token);
             return Ok(result);
         }
 
-        [HttpGet("GetAllTravelPolicyAsync")]
-        public async Task<ActionResult<IEnumerable<GetAllTravelQueryResponse>>> GetAllTravelPolicyAsync(CancellationToken token)
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<IEnumerable<GetAllTravelQueryResponse>>> GetAll(CancellationToken token)
         {
             var result = await _mediator.Send(new GetAllTravelQuery(), token);
             return Ok(result);
 
         }
 
-        [HttpPost("CreateTravelPolicy")]
-        public async Task<ActionResult<CreateTravelCommandResponse>> CreateTravelPolicy([FromBody] CreateTravelCommands command, CancellationToken token)
+        [HttpPost("Create")]
+        public async Task<ActionResult<CreateTravelCommandResponse>> Create([FromBody] CreateTravelCommands command, CancellationToken token)
         {
             var result = await _mediator.Send(command, token);
             return Ok(result);
         }
 
-        [HttpPatch("UpdateTravelPolicy")]
-        public async Task<ActionResult<UpdateTravelCommandResponse>> UpdateTravelPolicy([FromBody] UpdateTravelCommand command, CancellationToken token)
+        [HttpPatch("Update")]
+        public async Task<ActionResult<UpdateTravelCommandResponse>> Update([FromBody] UpdateTravelCommand command, CancellationToken token)
         {
             var result = await _mediator.Send(command, token);
             return Ok(result);
         }
 
-        [HttpDelete("DeleteTravelPolicy")]
-        public async Task<ActionResult<bool>> DeleteTravelPolicy([FromBody] DeleteTravelCommand command, CancellationToken token)
+        [HttpDelete("Delete")]
+        public async Task<ActionResult<bool>> Delete([FromBody] DeleteTravelCommand command, CancellationToken token)
         {
             var result = await _mediator.Send(command, token);
             return Ok(result);

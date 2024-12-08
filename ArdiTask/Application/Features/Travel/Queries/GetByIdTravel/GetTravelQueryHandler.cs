@@ -14,8 +14,8 @@ namespace Application.Features.Travel.Queries.GetByIdMedical
     public class GetTravelQueryHandler : IRequestHandler<GetTravelQuery, GetTravelQueryResponse>
     {
 
-        private readonly ITravelQueryRepository _travel;
-        public GetTravelQueryHandler(ITravelQueryRepository travel)
+        private readonly ITravelReadRepository _travel;
+        public GetTravelQueryHandler(ITravelReadRepository travel)
         {
             _travel = travel;
         }
@@ -26,7 +26,7 @@ namespace Application.Features.Travel.Queries.GetByIdMedical
             return new GetTravelQueryResponse(
                 Id: data.Id,
                 CreateDate: data.CreateDate,
-                IsActive: data.IsActive,
+                IsDeleted: data.IsDeleted,
                 PolicyNumber: data.PolicyNumber,
                 StartDate: data.StartDate,
                 EndDate: data.EndDate,

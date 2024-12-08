@@ -18,7 +18,6 @@ namespace Application.Features.Customers.Commands.UpdateCustomer
         string Email,
         Gender Gender,
         string Citizenship,
-        string Address,
-        bool IsActive
+        string Address
     );
 }

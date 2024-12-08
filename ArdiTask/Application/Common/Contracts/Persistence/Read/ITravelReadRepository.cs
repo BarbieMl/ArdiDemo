@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Common.Contracts.Persistence.Query
 {
-    public interface IMedicalQueryRepository : IGenericQueryRepository<MedicalPolicy>
+    public interface ITravelReadRepository : IGenericReadRepository<TravelPolicy>
     {
     }
 }

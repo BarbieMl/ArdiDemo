@@ -13,22 +13,18 @@ using System.Threading.Tasks;
 namespace Application.Features.Travel.Commands.UpdateTravel
 {
     public class UpdateTravelCommandsHandler : IRequestHandler<UpdateTravelCommand, UpdateTravelCommandResponse>
-    {
-        private readonly ITravelRepository _Travel; 
+    { 
         private readonly IUnitOfWork _unitOfWork;
 
-        public UpdateTravelCommandsHandler(
-                ITravelRepository travel,
-             IUnitOfWork unitOfWork)
-        {
-            _Travel = travel; 
+        public UpdateTravelCommandsHandler(IUnitOfWork unitOfWork)
+        { 
             _unitOfWork = unitOfWork;
         }
 
         public async Task<UpdateTravelCommandResponse> Handle(UpdateTravelCommand command, CancellationToken cancellationToken)
         {
-            var existingRecord = await _Travel.FindAsync(x => x.Id == command.Id);
-            if (existingRecord is null || !existingRecord.IsActive)
+            var existingRecord = await _unitOfWork.TravelRepository.FindAsync(x => x.Id == command.Id, cancellationToken);
+            if (existingRecord is null || !existingRecord.IsDeleted)
             {
                 throw new KeyNotFoundException("Medical record not found.");
             }
@@ -38,12 +34,11 @@ namespace Application.Features.Travel.Commands.UpdateTravel
             existingRecord.EndDate = command.EndDate;
             existingRecord.PremiumAmount = command.PremiumAmount;
             existingRecord.Insurer = command.Insurer;
-            existingRecord.TypeOfPaymentPeriod = command.TypeOfPaymentPeriod; 
-            existingRecord.IsActive = command.IsActive;
+            existingRecord.TypeOfPaymentPeriod = command.TypeOfPaymentPeriod;  
             existingRecord.TypeOfTrip = command.TypeOfTrip;
-            existingRecord.Countries = command.Countries; 
+            existingRecord.Countries = command.Countries;
 
-            await _Travel.Update(existingRecord);
+            await _unitOfWork.TravelRepository.Update(existingRecord, cancellationToken);
             await _unitOfWork.SaveAsync(cancellationToken);
 
             return new UpdateTravelCommandResponse
@@ -55,7 +50,7 @@ namespace Application.Features.Travel.Commands.UpdateTravel
                 existingRecord.PremiumAmount, 
                 existingRecord.Insurer,
                 existingRecord.TypeOfPaymentPeriod,
-                existingRecord.IsActive,
+                existingRecord.IsDeleted,
                 existingRecord.TypeOfTrip,
                 existingRecord.Countries
                 );

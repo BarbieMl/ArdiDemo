@@ -27,8 +27,8 @@ namespace Application.Features.Medical.Commands.UpdateMedical
 
         public async Task<UpdateMedicalCommandResponse> Handle(UpdateMedicalCommand command, CancellationToken cancellationToken)
         {
-            var existingRecord = await _medical.FindAsync(x => x.Id == command.Id);
-            if (existingRecord is null || !existingRecord.IsActive)
+            var existingRecord = await _unitOfWork.MedicalRepository.FindAsync(x => x.Id == command.Id, cancellationToken);
+            if (existingRecord is null || !existingRecord.IsDeleted)
             {
                 throw new KeyNotFoundException("Medical record not found.");
             }
@@ -39,10 +39,9 @@ namespace Application.Features.Medical.Commands.UpdateMedical
             existingRecord.PremiumAmount = command.PremiumAmount;
             existingRecord.Insurer = command.Insurer;
             existingRecord.TypeOfPaymentPeriod = command.TypeOfPaymentPeriod;
-            existingRecord.Provider = command.Provider;
-            existingRecord.IsActive = command.IsActive; 
+            existingRecord.Provider = command.Provider; 
 
-            await _medical.Update(existingRecord);
+            await _unitOfWork.MedicalRepository.Update(existingRecord, cancellationToken);
             await _unitOfWork.SaveAsync(cancellationToken);
 
             return new UpdateMedicalCommandResponse
@@ -55,7 +54,7 @@ namespace Application.Features.Medical.Commands.UpdateMedical
                 existingRecord.Provider,
                 existingRecord.Insurer,
                 existingRecord.TypeOfPaymentPeriod,
-                existingRecord.IsActive
+                existingRecord.IsDeleted
                 );
         }
     }

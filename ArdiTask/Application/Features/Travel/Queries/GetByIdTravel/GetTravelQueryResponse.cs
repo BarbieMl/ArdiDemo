@@ -11,7 +11,7 @@ namespace Application.Features.Travel.Queries.GetByIdMedical
     public record GetTravelQueryResponse(
         Guid Id,
         DateTime CreateDate,
-        bool IsActive,
+        bool IsDeleted,
         string PolicyNumber,
         DateTime StartDate,
         DateTime EndDate,

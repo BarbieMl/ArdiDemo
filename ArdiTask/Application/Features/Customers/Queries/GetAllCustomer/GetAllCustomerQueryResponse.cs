@@ -11,7 +11,7 @@ namespace Application.Features.Customers.Queries.GetAllCustomer
     public record GetAllCustomerQueryResponse(
         Guid Id,
         DateTime CreateDate,
-        bool IsActive,
+        bool IsDeleted,
         string IdNumber,
         string PassportNumber,
         DateOnly DateOfBirth,

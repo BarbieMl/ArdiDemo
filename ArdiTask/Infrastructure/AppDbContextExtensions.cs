@@ -11,20 +11,26 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using Npgsql;
 using Microsoft.Extensions.Options;
+using Infrastructure.Persistence.DataContext;
+using Application.Common.SoftDelete;
 
-namespace Infrastructure.Persistence.DataContext
+namespace Infrastructure
 {
     public static class AppDbContextExtensions
-    { 
+    {
         public static IServiceCollection AddApplicationDbContext(this IServiceCollection services, string connectionString)
-        { 
-            services.AddDbContext<InsuranceDBContext>(options =>
-               options.UseSqlServer(connectionString));               
-            return services;
+        {
+            services.AddDbContext<InsuranceDBContext>((s, options) =>
+               options.UseSqlServer(connectionString)
+               .AddInterceptors(
+                        s.GetRequiredService<SoftDeleteInterceptor>()));
+            return services; 
         }
+
+
         public static IServiceCollection AddDapperSupport(this IServiceCollection services, string connectionString)
         {
-            services.AddScoped<DapperInsuranceDBContext>(provider =>
+            services.AddScoped(provider =>
            new DapperInsuranceDBContext(connectionString));
 
             services.AddScoped<IDbConnection>(sp =>

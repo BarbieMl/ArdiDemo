@@ -6,8 +6,8 @@ namespace Application.Features.Travel.Queries.GetAllMedical
     public class GetAllTravelQueryHandler : IRequestHandler<GetAllTravelQuery, List<GetAllTravelQueryResponse>>
     {
 
-        private readonly ITravelQueryRepository _travel;
-        public GetAllTravelQueryHandler(ITravelQueryRepository travel)
+        private readonly ITravelReadRepository _travel;
+        public GetAllTravelQueryHandler(ITravelReadRepository travel)
         {
             _travel = travel;
         }
@@ -22,7 +22,7 @@ namespace Application.Features.Travel.Queries.GetAllMedical
                 var response = new GetAllTravelQueryResponse(
                     Id: data.Id,
                     CreateDate: data.CreateDate,
-                    IsActive: data.IsActive,
+                    IsDeleted: data.IsDeleted,
                     PolicyNumber: data.PolicyNumber,
                     StartDate: data.StartDate,
                     EndDate: data.EndDate,

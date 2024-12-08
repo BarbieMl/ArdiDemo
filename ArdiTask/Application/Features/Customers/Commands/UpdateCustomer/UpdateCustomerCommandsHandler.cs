@@ -15,22 +15,19 @@ using System.Threading.Tasks;
 namespace Application.Features.Customers.Commands.UpdateCustomerf
 {
     public class UpdateCustomerCommandsHandler : IRequestHandler<UpdateCustomerCommand, UpdateCustomerCommandResponse>
-    {
-        private readonly ICustomerRepository _customer;
+    { 
         private readonly IUnitOfWork _unitOfWork;
 
-        public UpdateCustomerCommandsHandler(
-                ICustomerRepository customer,
+        public UpdateCustomerCommandsHandler( 
              IUnitOfWork unitOfWork)
-        {
-            _customer = customer;
+        { 
             _unitOfWork = unitOfWork;
         }
 
         public async Task<UpdateCustomerCommandResponse> Handle(UpdateCustomerCommand command, CancellationToken cancellationToken)
         {
-            var existingRecord = await _customer.FindAsync(x => x.Id == command.Id);
-            if (existingRecord is null || !existingRecord.IsActive)
+            var existingRecord = await _unitOfWork.Customers.FindAsync(x => x.Id == command.Id, cancellationToken);
+            if (existingRecord is null || !existingRecord.IsDeleted)
             {
                 throw new KeyNotFoundException("Customer record not found.");
             } 
@@ -43,9 +40,8 @@ namespace Application.Features.Customers.Commands.UpdateCustomerf
             existingRecord.Gender = command.Gender;
             existingRecord.Citizenship = command.Citizenship;
             existingRecord.Address = command.Address;
-            existingRecord.IsActive = command.IsActive; 
 
-            await _customer.Update(existingRecord);
+            await _unitOfWork.Customers.Update(existingRecord, cancellationToken);
             await _unitOfWork.SaveAsync(cancellationToken);
 
             return new UpdateCustomerCommandResponse
@@ -60,8 +56,7 @@ namespace Application.Features.Customers.Commands.UpdateCustomerf
                 existingRecord.Email,
                 existingRecord.Gender,
                 existingRecord.Citizenship,
-                existingRecord.Address,
-                existingRecord.IsActive
+                existingRecord.Address
                 );
         }
     }

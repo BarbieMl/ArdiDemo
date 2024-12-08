@@ -12,8 +12,8 @@ namespace Application.Features.Customers.Queries.GetCustomer
 {
     public class GetCustomerQueryHandler : IRequestHandler<GetCustomerQuery, GetCustomerQueryResponse>
     {
-        private readonly ICustomerQueryRepository _customer;
-        public GetCustomerQueryHandler(ICustomerQueryRepository customer)
+        private readonly ICustomerReadRepository _customer;
+        public GetCustomerQueryHandler(ICustomerReadRepository customer)
         {
             _customer = customer;
         }
@@ -24,7 +24,7 @@ namespace Application.Features.Customers.Queries.GetCustomer
             var response = new GetCustomerQueryResponse(
                  Id: result.Id,
                  CreateDate: result.CreateDate,
-                 IsActive: result.IsActive,
+                 IsDeleted: result.IsDeleted,
                  IdNumber: result.IdNumber,
                  PassportNumber: result.PassportNumber,
                  DateOfBirth: new DateOnly(result.DateOfBirth.Year, result.DateOfBirth.Month, result.DateOfBirth.Day),
@@ -38,7 +38,7 @@ namespace Application.Features.Customers.Queries.GetCustomer
                  MedicalPolicies: result.MedicalPolicies?.Select(mp => new MedicalPolicyDto(
                     Id: mp.Id,
                     CreateDate: mp.CreateDate,
-                    IsActive: mp.IsActive,
+                    IsDeleted: mp.IsDeleted,
                     PolicyNumber: mp.PolicyNumber,
                     StartDate: mp.StartDate,
                     EndDate: mp.EndDate,
@@ -50,7 +50,7 @@ namespace Application.Features.Customers.Queries.GetCustomer
                 TravelPolicies: result.TravelPolicies?.Select(tp => new TravelPolicyDto(
                     Id: tp.Id,
                     CreateDate: tp.CreateDate,
-                    IsActive: tp.IsActive,
+                    IsDeleted: tp.IsDeleted,
                     PolicyNumber: tp.PolicyNumber,
                     StartDate: tp.StartDate,
                     EndDate: tp.EndDate,

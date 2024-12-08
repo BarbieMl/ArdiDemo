@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Repoistory.Queries
 {
-    public class TravelQueryRepository : GenericQueryRepository<TravelPolicy>, ITravelQueryRepository
+    public class TravelReadRepository : GenericReadRepository<TravelPolicy>, ITravelReadRepository
     {
-        public TravelQueryRepository(DapperInsuranceDBContext context)
+        public TravelReadRepository(DapperInsuranceDBContext context)
             : base(context)
         {
         }

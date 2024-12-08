@@ -1,5 +1,4 @@
-﻿using API.Request.CustomerRequest;  
-using Application.Features.Medical.Commands.CreateMedical;
+﻿using Application.Features.Medical.Commands.CreateMedical;
 using Application.Features.Medical.Commands.DeleteMedical;
 using Application.Features.Medical.Commands.UpdateMedical;
 using Application.Features.Medical.Queries.GetAllMedical;
@@ -19,37 +18,37 @@ namespace API.Controllers
             _mediator = mediator;
 
         }
-        [HttpGet("GetMedicalPolicy")]
-        public async Task<ActionResult<GetMedicalQueryResponse>> GetMedicalPolicy([FromQuery] GetMedicalQuery query, CancellationToken token)
+        [HttpGet("Get")]
+        public async Task<ActionResult<GetMedicalQueryResponse>> Get([FromQuery] GetMedicalQuery query, CancellationToken token)
         {
             var result = await _mediator.Send(query, token);
             return Ok(result);
         }
 
-        [HttpGet("GetAllMedicalPolicyAsync")]
-        public async Task<ActionResult<IEnumerable<GetAllMedicalQueryResponse>>> GetAllMedicalPolicyAsync(CancellationToken token)
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<IEnumerable<GetAllMedicalQueryResponse>>> GetAll(CancellationToken token)
         {
             var result = await _mediator.Send(new GetAllMedicalQuery(), token);
             return Ok(result); 
 
         }
 
-        [HttpPost("CreateMedicalPolicy")]
-        public async Task<ActionResult<CreateMedicalCommandResponse>> CreateMedicalPolicy([FromBody] CreateMedicalCommands command, CancellationToken token)
+        [HttpPost("Create")]
+        public async Task<ActionResult<CreateMedicalCommandResponse>> Create([FromBody] CreateMedicalCommands command, CancellationToken token)
         {
             var result = await _mediator.Send(command, token);
            return Ok(result);
         }
 
-        [HttpPatch("UpdateMedicalPolicy")]
-        public async Task<ActionResult<UpdateMedicalCommandResponse>> UpdateMedicalPolicy([FromBody] UpdateMedicalCommand command, CancellationToken token)
+        [HttpPatch("Update")]
+        public async Task<ActionResult<UpdateMedicalCommandResponse>> Updatey([FromBody] UpdateMedicalCommand command, CancellationToken token)
         {
             var result = await _mediator.Send(command, token);
             return Ok(result);
         }
 
-        [HttpDelete("DeleteMedicalPolicy")]
-        public async Task<ActionResult<bool>> DeleteMedicalPolicy([FromBody] DeleteMedicalCommand command, CancellationToken token)
+        [HttpDelete("Delete")]
+        public async Task<ActionResult<bool>> Delete([FromBody] DeleteMedicalCommand command, CancellationToken token)
         {
             var result = await _mediator.Send(command, token);
             return Ok(result);

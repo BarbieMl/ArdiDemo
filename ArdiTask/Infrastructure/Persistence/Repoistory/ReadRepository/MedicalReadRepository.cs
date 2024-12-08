@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Repoistory.Queries
 {
-    public class MedicalQueryRepository : GenericQueryRepository<MedicalPolicy>, IMedicalQueryRepository
+    public class MedicalReadRepository : GenericReadRepository<MedicalPolicy>, IMedicalReadRepository
     {
-        public MedicalQueryRepository(DapperInsuranceDBContext context)
+        public MedicalReadRepository(DapperInsuranceDBContext context)
             : base(context)
         {
         }

@@ -11,29 +11,23 @@ using System.Threading.Tasks;
 namespace Application.Features.Travel.Commands.DeleteTravel
 {
     public class DeleteTravelCommandHandler : IRequestHandler<DeleteTravelCommand, bool>
-    {
-        private readonly ITravelRepository _travel;
+    { 
         private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteTravelCommandHandler(
-                ITravelRepository travel,
-             IUnitOfWork unitOfWork)
+        public DeleteTravelCommandHandler(IUnitOfWork unitOfWork)
         {
-            _travel = travel;
             _unitOfWork = unitOfWork;
         }
 
         public async Task<bool> Handle(DeleteTravelCommand command, CancellationToken cancellationToken)
         {
-            var existingRecord = await _travel.FindAsync(x => x.Id == command.Id);
-            if (existingRecord is null || !existingRecord.IsActive)
+            var existingRecord = await _unitOfWork.TravelRepository.FindAsync(x => x.Id == command.Id, cancellationToken);
+            if (existingRecord is null || !existingRecord.IsDeleted)
             {
                 throw new KeyNotFoundException("Medical record not found.");
             }
 
-            existingRecord.IsActive = false;
-
-            await _travel.Update(existingRecord);
+            await _unitOfWork.TravelRepository.Delete(existingRecord, cancellationToken);
             await _unitOfWork.SaveAsync(cancellationToken);
 
             return true;

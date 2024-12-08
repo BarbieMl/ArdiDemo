@@ -9,7 +9,7 @@ namespace Application.Features.Medical.Queries.GetAllMedical
 {
     public record GetAllMedicalQueryResponse(Guid Id,
         DateTime CreateDate,
-        bool IsActive,
+        bool IsDeleted,
         string PolicyNumber,
         DateTime StartDate,
         DateTime EndDate,

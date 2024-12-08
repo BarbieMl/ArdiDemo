@@ -16,6 +16,6 @@ namespace Application.Features.Customers.Commands.UpdateCustomer
         Gender Gender,
         string Citizenship,
         string Address,
-        bool IsActive
+        bool IsDeleted
     ) : IRequest<UpdateCustomerCommandResponse>;
 }

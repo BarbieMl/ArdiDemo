@@ -17,7 +17,7 @@ namespace Application.Features.Travel.Commands.UpdateTravel
         decimal PremiumAmount,
         string Insurer,
         TypeOfPaymentPeriod TypeOfPaymentPeriod,
-        bool IsActive,
+        bool IsDeleted,
         TypeOfTrip TypeOfTrip,
         string Countries  
     );
