@@ -1,6 +1,9 @@
-using API.Middleware;
+using API.Behaviors;
+using API.Infrastructure;
 using Application;
+using FluentValidation;
 using Infrastructure;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +18,11 @@ builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(); 
+builder.Services.AddSwaggerGen();
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+builder.Services.AddExceptionHandler<GlobalExceptionHanlder>();
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
@@ -32,6 +39,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseExceptionHandler();
 
 app.Run();
