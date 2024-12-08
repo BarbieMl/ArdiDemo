@@ -2,10 +2,6 @@
 using Application.Features.Customers.Commands.UpdateCustomer;
 using Application.Features.Customers.Queries.GetAllCustomer;
 using Application.Features.Customers.Queries.GetCustomer;
-using Application.Features.Medical.Commands.CreateMedical;
-using Application.Features.Medical.Commands.DeleteMedical;
-using Application.Features.Medical.Commands.UpdateMedical;
-using Application.Features.Medical.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +28,7 @@ namespace API.Controllers
             return Ok(result);
         }
         [HttpGet("GetAll")]
-        public async Task<ActionResult<IEnumerable<GetCustomerQueryResponse>>> GetAll(CancellationToken token)
+        public async Task<ActionResult<IEnumerable<GetAllCustomerQueryResponse>>> GetAll(CancellationToken token)
         { 
             var result = await _mediator.Send(new GetAllCustomerQuery(), token);
             return Ok(result);

@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 
 namespace Application.DTOs
 {
-    public record MedicalPolicyDto(
-        Guid Id,
-        DateTime CreateDate,
-        bool IsDeleted,
-        string PolicyNumber,
-        DateTime StartDate,
-        DateTime EndDate,
-        decimal PremiumAmount,
-        string Insurer,
-        TypeOfPaymentPeriod TypeOfPaymentPeriod,
-        string Provider
-    );
+    public record MedicalPolicyDto
+    { 
+        public Guid Id { get; init; }
+        public DateTime CreateDate { get; init; }
+        public bool IsDeleted { get; init; }
+        public string PolicyNumber { get; init; }
+        public DateTime StartDate { get; init; }
+        public DateTime EndDate { get; init; }
+        public decimal PremiumAmount { get; init; }
+        public string Insurer { get; init; }
+        public TypeOfPaymentPeriod TypeOfPaymentPeriod { get; init; }
+        public string Provider { get; init; }
+    }
 }

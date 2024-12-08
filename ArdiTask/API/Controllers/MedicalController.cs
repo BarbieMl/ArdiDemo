@@ -41,7 +41,7 @@ namespace API.Controllers
         }
 
         [HttpPatch("Update")]
-        public async Task<ActionResult<UpdateMedicalCommandResponse>> Updatey([FromBody] UpdateMedicalCommand command, CancellationToken token)
+        public async Task<ActionResult<UpdateMedicalCommandResponse>> Update([FromBody] UpdateMedicalCommand command, CancellationToken token)
         {
             var result = await _mediator.Send(command, token);
             return Ok(result);
